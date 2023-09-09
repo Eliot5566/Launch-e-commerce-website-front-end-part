@@ -95,9 +95,9 @@ export default function OrderScreen() {
         setTimeout(() => {
           if (successPay) {
             dispatch({ type: 'PAY_RESET' });
-            window.location.reload(); // 
+            window.location.reload(); //
           }
-        }, 1000); // 
+        }, 1000); //
       } catch (err) {
         dispatch({ type: 'PAY_FAIL', payload: err });
         console.log(successPay);
@@ -114,9 +114,12 @@ export default function OrderScreen() {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
         //改
-        const { data } = await axios.get(`/api/orders/${orderId}`, {
-          headers: { authorization: `Bearer ${userInfo.token}` },
-        });
+        const { data } = await axios.get(
+          `https://last-hx4j.onrender.com/api/orders/${orderId}`,
+          {
+            headers: { authorization: `Bearer ${userInfo.token}` },
+          }
+        );
         data.order_items = JSON.parse(data.order_items);
         data.shipping_address = JSON.parse(data.shipping_address);
         console.log(data.shipping_address);
@@ -161,9 +164,12 @@ export default function OrderScreen() {
     } else {
       const loadPaypalScript = async () => {
         try {
-          const { data: clientId } = await axios.get('/api/keys/paypal', {
-            headers: { authorization: `Bearer ${userInfo.token}` },
-          });
+          const { data: clientId } = await axios.get(
+            'https://last-hx4j.onrender.com/api/keys/paypal',
+            {
+              headers: { authorization: `Bearer ${userInfo.token}` },
+            }
+          );
           console.log(123 + clientId);
 
           paypalDispatch({

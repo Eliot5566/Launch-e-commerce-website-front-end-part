@@ -65,7 +65,7 @@ function ProductScreen() {
     fetchData();
   }, [slug]);
   //使用 useContext 來取得購物車的資料 從Store.js中取得state和dispatch
-  //state是一個物件，裡面有userInfo和cart兩個屬性 cart是一個物件，裡面有cartItems這個屬性 cartItems是一個陣列，裡面放的是物件 
+  //state是一個物件，裡面有userInfo和cart兩個屬性 cart是一個物件，裡面有cartItems這個屬性 cartItems是一個陣列，裡面放的是物件
   const { state, dispatch: ctxDispatch } = useContext(Store);
   //把購物車的資料從state中取出來
   const { cart } = state;
@@ -83,7 +83,7 @@ function ProductScreen() {
       return;
     }
     // 把產品加到購物車中 這裡的type是自己定義的，可以是任何字串 這裡的payload是一個物件，裡面有_id、name、image、price、countInStock、qty六個屬性
-    // 這裡的...product是一個物件，裡面有_id、name、image、price、countInStock五個屬性 這裡的quantity是一個數字 
+    // 這裡的...product是一個物件，裡面有_id、name、image、price、countInStock五個屬性 這裡的quantity是一個數字
     ctxDispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity } });
     navigate('/cart');
   };
