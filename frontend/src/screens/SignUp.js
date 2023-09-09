@@ -28,11 +28,14 @@ export default function SignupScreen() {
       return;
     }
     try {
-      const { data } = await Axios.post('/api/users/signup', {
-        name,
-        email,
-        password,
-      });
+      const { data } = await Axios.post(
+        'https://last-hx4j.onrender.com/api/users/signup',
+        {
+          name,
+          email,
+          password,
+        }
+      );
 
       // 在注册成功后，将用户令牌存储在本地存储中
       localStorage.setItem('userInfo', JSON.stringify(data));

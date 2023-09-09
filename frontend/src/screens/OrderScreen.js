@@ -84,7 +84,7 @@ export default function OrderScreen() {
       try {
         dispatch({ type: 'PAY_REQUEST' });
         const { data } = await axios.put(
-          `/api/orders/${orderId}/pay`,
+          `https://last-hx4j.onrender.com/api/orders/${orderId}/pay`,
           details,
           {
             headers: { authorization: `Bearer ${userInfo.token}` },

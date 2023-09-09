@@ -21,10 +21,13 @@ export default function SigninScreen() {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await Axios.post('/api/users/signin', {
-        email,
-        password,
-      });
+      const { data } = await Axios.post(
+        'https://last-hx4j.onrender.com/api/users/signin',
+        {
+          email,
+          password,
+        }
+      );
       //ctxDispatch是Store.js裡的dispatch function
       //用來更新Store.js裡的state userInfo
       ctxDispatch({ type: 'USER_SIGNIN', payload: data });

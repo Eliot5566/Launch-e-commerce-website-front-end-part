@@ -58,7 +58,9 @@ function HomeScreen() {
       dispatch({ type: 'FETCH_REQUEST' });
       try {
         //使用axios來取得資料
-        const result = await axios.get('/api/products');
+        const result = await axios.get(
+          'https://last-hx4j.onrender.com/api/products'
+        );
         //如果成功，就發送FETCH_SUCCESS，並且把從後端取得的資料放到action.payload
         dispatch({ type: 'FETCH_SUCCESS', payload: result.data });
         //如果失敗，就發送FETCH_FAIL，並且把錯誤訊息放到action.payload

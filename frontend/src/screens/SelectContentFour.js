@@ -43,7 +43,7 @@ export default function SelectContentFour() {
       setSelectedBoxImages((prevImages) => [...prevImages, product.image]);
     }
   };
-  
+
   // const handleProductSelect = (product, position) => {
   //   if (selectedBoxImages.length == selectedBoxCapacity) {
   //     window.alert('只能選擇4個商品');
@@ -96,7 +96,9 @@ export default function SelectContentFour() {
       dispatch({ type: 'FETCH_REQUEST' });
       try {
         //使用axios來取得資料
-        const result = await axios.get('/api/products');
+        const result = await axios.get(
+          'https://last-hx4j.onrender.com/api/products'
+        );
         //如果成功，就發送FETCH_SUCCESS，並且把從後端取得的資料放到action.payload
         dispatch({ type: 'FETCH_SUCCESS', payload: result.data });
         //如果失敗，就發送FETCH_FAIL，並且把錯誤訊息放到action.payload
@@ -141,20 +143,20 @@ export default function SelectContentFour() {
       </Row>
       {/* 在此处显示已选择产品的图像 */}
       <div className="selected-products">
-  <h3>已選擇的商品</h3>
-  <div className="selected-four-box">
-    {[0, 1, 2, 3].map((index) => (
-      <img
-        key={index}
-        src={selectedBoxImages[index] } // placeholderImage是一個空白圖片的URL
-        className={`selected-product-image ${
-          index === 3 ? 'top-image' : ''
-        }`}
-        alt={`selected product ${index}`}
-      />
-    ))}
-  </div>
-</div>
+        <h3>已選擇的商品</h3>
+        <div className="selected-four-box">
+          {[0, 1, 2, 3].map((index) => (
+            <img
+              key={index}
+              src={selectedBoxImages[index]} // placeholderImage是一個空白圖片的URL
+              className={`selected-product-image ${
+                index === 3 ? 'top-image' : ''
+              }`}
+              alt={`selected product ${index}`}
+            />
+          ))}
+        </div>
+      </div>
       {showNextButton && (
         <button className="btn btn-primary nbt" onClick={handleClearSelection}>
           重新選擇

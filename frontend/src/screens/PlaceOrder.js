@@ -58,7 +58,7 @@ export default function PlaceOrder() {
       dispatch({ type: 'CREATE_REQUEST' });
 
       const { data } = await Axios.post(
-        '/api/orders',
+        'https://last-hx4j.onrender.com/api/orders',
         {
           orderItems: cart.cartItems,
           shippingAddress: cart.shippingAddress,
