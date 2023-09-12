@@ -5,7 +5,7 @@ import './product.css';
 import './GiftProducts.css';
 
 import axios from 'axios';
-import { useContext } from 'react';
+
 import { Store } from '../Store';
 
 function GiftProducts(props) {
