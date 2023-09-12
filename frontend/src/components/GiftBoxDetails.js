@@ -1,0 +1,178 @@
+//四格禮盒專用
+import React, { useContext, useEffect } from 'react';
+import { Store } from '../Store';
+import { useNavigate } from 'react-router-dom';
+
+function ProgressBar() {
+  // const { data } = useContext(ProgressContext);
+  // const [CurrentStep, setCurrentStep] = useState(1);
+  return (
+    <>
+      <div className="container">
+        <ul className="progress bg-body fs-5" style={{ padding: '5rem' }}>
+          <li className="done">選擇規格</li>
+          <li className="done">選擇商品</li>
+          <li className="done">貼心小卡</li>
+          <li className="active">確認內容</li>
+        </ul>
+      </div>
+    </>
+  );
+}
+
+export default function GiftBoxDetails() {
+  const navigate = useNavigate();
+  const { state, dispatch } = useContext(Store);
+
+  const {
+    selectedProducts,
+    selectedCard,
+    cardContent,
+    _id,
+    cart: { cartItems },
+    giftBox, // 添加禮盒訊息
+    giftBoxQuantity, // 添加禮盒數量
+  } = state;
+
+  // 加载本地存储的禮盒信息
+  
+  useEffect(() => {
+    const storedGiftBox = localStorage.getItem('giftBox');
+    const storedGiftBoxQuantity = localStorage.getItem('giftBoxQuantity');
+
+    if (storedGiftBox) {
+      dispatch({
+        type: 'UPDATE_CART_GIFT_BOX',
+        payload: JSON.parse(storedGiftBox),
+      });
+    }
+
+    if (storedGiftBoxQuantity) {
+      // 如果之前存放的禮盒數量存在，則加载到state中
+      dispatch({
+        type: 'UPDATE_GIFT_BOX_QUANTITY',
+        payload: parseInt(storedGiftBoxQuantity),
+      });
+    }
+  }, [dispatch]);
+
+  const addToCart = (giftBoxId) => {
+    let giftBox = {};
+    if (giftBoxId === 20) {
+      giftBox = {
+        _id: 20,
+        name: '4格禮盒',
+        image: '/images/four_gift.png',
+        price: 200,
+        quantity: 1,
+        isGiftBox: true, //標記是禮盒產品
+      };
+    } else if (giftBoxId === 21) {
+      giftBox = {
+        _id: 21,
+        name: '6格禮盒',
+        image: '路径/到/6格禮盒图片',
+        price: 300,
+        quantity: 1,
+        isGiftBox: true,
+      };
+    } else if (giftBoxId === 22) {
+      giftBox = {
+        _id: 22,
+        name: '9格禮盒',
+        image: '路径/到/9格禮盒图片',
+        price: 400,
+        quantity: 1,
+        isGiftBox: true,
+      };
+    }
+
+    // 增加禮盒數量
+    dispatch({ type: 'ADD_GIFT_BOX' });
+
+    // 更新禮盒資料到本地存儲
+    localStorage.setItem('giftBox', JSON.stringify(giftBox));
+    localStorage.setItem('giftBoxQuantity', giftBoxQuantity.toString());
+
+    // 添加禮盒到購物車，並传递 _id
+    dispatch({ type: 'CART_ADD_ITEM', payload: giftBox });
+
+    // 更新購物車中的禮盒信息
+    dispatch({
+      type: 'UPDATE_CART_GIFT_BOX',
+      payload: giftBox,
+    });
+    console.log(giftBox);
+
+    // 更新 totalItems 和 cartCount，包括禮盒數量
+    const updatedTotalItems =
+      cartItems.reduce((acc, item) => {
+        const itemQuantity = item.quantity || 0;
+        return acc + itemQuantity;
+      }, 0) + giftBoxQuantity;
+
+    const updatedCartCount = cartItems.length + giftBoxQuantity;
+
+    // 更新 totalItems 和 cartCount 的值
+    dispatch({
+      type: 'UPDATE_TOTAL_ITEMS',
+      payload: updatedTotalItems,
+    });
+
+    dispatch({
+      type: 'UPDATE_CART_COUNT',
+      payload: updatedCartCount,
+    });
+    //新增提示訊息 加入購物車成功
+    
+    alert('加入購物車成功!');
+    navigate('/cart');
+  };
+
+  return (
+    <div>
+      <ProgressBar />
+      <h3>已選擇的商品</h3>
+      <div className="selected-four-box ">
+        {/* 渲染选定的产品信息 */}
+        {selectedProducts.map((selectedProduct) => (
+          <img
+            key={selectedProduct._id}
+            src={selectedProduct.product_package}
+            className="selected-product-image"
+            alt={`selected product ${selectedProduct._id}`}
+          />
+        ))}
+      </div>
+
+      <hr />
+
+      <div className=" ">
+        {/* 渲染选定的产品信息 */}
+        {selectedProducts.map((selectedProduct) => (
+          <div key={selectedProduct._id} className="product-details">
+            <img
+              src={selectedProduct.product_package}
+              className="selected-product-image"
+              alt={`selected product ${selectedProduct._id}`}
+            />
+            <h4>{selectedProduct.name}</h4>
+            <p>描述：{selectedProduct.description}</p>
+          </div>
+        ))}
+      </div>
+
+      <hr />
+      <div>
+        {/* 显示用户选择的卡片样式和内容 */}
+        <h3>選擇的卡片樣式</h3>
+        <p>{selectedCard}</p>
+
+        <h3>卡片內容</h3>
+        <p>{cardContent}</p>
+      </div>
+
+      <button onClick={() => addToCart(20)}>將禮盒添加到購物車</button>
+    </div>
+  );
+}

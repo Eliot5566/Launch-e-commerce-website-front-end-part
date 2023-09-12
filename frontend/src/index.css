@@ -75,22 +75,6 @@ main {
   color: rgb(252, 73, 8);
 }
 
-.nbt {
-  float: right;
-}
-
-.giftPitcure img {
-  height: 250px;
-  width: 250px;
-  object-fit: cover;
-}
-
-.selected-product-image {
-  height: 250px;
-  width: 250px;
-  object-fit: cover;
-}
-
 /* 分類標題 */
 .CATtitle {
   writing-mode: vertical-lr;
@@ -102,7 +86,7 @@ main {
   .CATtitle {
     writing-mode: horizontal-tb;
     text-align: center;
-    background-color: rgba(230, 100, 101, 0.2);
+    /* background-color: rgba(230, 100, 101, 0.2); */
   }
 }
 
@@ -167,7 +151,7 @@ main {
   left: 0;
   width: 100%;
   height: 5px;
-  background-color: #e66465;
+  background-color: #fcdde2;
   border-radius: 8px 8px 0 0;
   opacity: 0;
   transition: 0.3s;
@@ -179,7 +163,7 @@ main {
 }
 
 .nav-item:not(.is-active):hover {
-  color: #b95151;
+  /* color: #b95151; */
   cursor: pointer;
 }
 
@@ -232,8 +216,7 @@ main {
   opacity: 1;
   right: 0;
 }
-a.nav-link{
- 
+a.nav-link {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -241,34 +224,15 @@ a.nav-link{
   transform: scale(1);
   transition: all 0.3s ease-in-out;
   font-size: 1.5rem;
-  margin-left:auto; ;
+  margin-left: auto;
 }
-a.nav-link:hover{
- 
+a.nav-link:hover {
   transform: scale(1.3);
   transition: all 0.7s ease-in-out;
 }
-.nav-link{
+.nav-link {
   margin: 0 1rem;
 }
-
-.box-image{
-  cursor: pointer;
-}
-
-.selected-four-box{
-  
-  cursor: pointer;
-  display: flex;
-  
-  justify-content: center;
-/* background-color: #83818c;   */
-margin: 5px;
-
-}
-
-  
-
 
 /* 立即選購按鈕 */
 
@@ -306,3 +270,194 @@ margin: 5px;
 } */
 
 /* 產品遮罩 */
+
+/* 客製禮盒樣式 */
+
+/*進度條*/
+/* .progress{
+  font-Size: '1em';
+} */
+
+.progress li {
+  list-style-type: none;
+  float: left;
+  width: 100%;
+  position: relative;
+  text-align: center;
+  z-index: 1;
+}
+
+.progress li:before {
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  content: '\f111';
+  width: 30px;
+  height: 30px;
+  line-height: 28px;
+  border: 1px inset #ddd;
+  display: block;
+  text-align: center;
+  margin: 0 auto 10px auto;
+  border-radius: 50%;
+  background-color: #fff;
+  /* z-index: 1; */
+}
+
+.progress li.done:before {
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  content: '\f00c';
+}
+
+.progress li:after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  background-color: #ddd;
+  /* background-color: #030303; */
+  top: 15px;
+  left: -45%;
+  z-index: -1;
+}
+
+.progress li:first-child:after {
+  content: none;
+}
+
+.progress li.active,
+.progress li.done {
+  color: #9a2540;
+}
+
+.progress li.active:before,
+.progress li.done:before {
+  border-color: #9a2540;
+}
+
+.progress li.active + li:after,
+.progress li.done + li:after {
+  background-color: #9a2540;
+}
+
+/*進度條 -end*/
+
+/* 上&下一步按鈕、類別被點選的樣式 */
+.btn-color {
+  background-color: #9a2540;
+  color: white;
+  border-radius: 5px;
+  padding: 10px 10px;
+  font-size: 16px;
+  border: none;
+  text-decoration: none;
+}
+
+.btn-cat-color {
+  background-color: white;
+  color: #9a2540;
+  border-radius: 5px;
+  padding: 10px 10px;
+  font-size: 16px;
+  border: 1px solid #9a2540;
+  text-decoration: none;
+}
+
+/* 上&下一步按鈕、類別被點選的樣式 */
+
+/* 禮盒商品圖片 */
+.giftPitcure img {
+  height: 250px;
+  width: 250px;
+  object-fit: contain;
+  cursor: pointer;
+}
+
+.selected-product-image {
+  height: 250px;
+  width: 250px;
+  object-fit: cover;
+}
+
+.box-image {
+  cursor: pointer;
+}
+
+.selected-four-box {
+  width: 330px;
+  height: 330px;
+  cursor: pointer;
+  /* justify-content: center; */
+  background-image: url('./images/four_boxBodyIn_0.png');
+
+  background-repeat: no-repeat;
+  background-position: center;
+  /* display: inline-block; */
+  /* display: flex;
+  justify-content: center; */
+  align-items: center;
+}
+.selected-six-box {
+  width: 480px;
+  height: 330px;
+  cursor: pointer;
+  justify-content: center;
+  background-image: url('./images/six_boxBodyIn_0.png');
+
+  background-repeat: no-repeat;
+  display: inline-block;
+}
+.selected-nine-box {
+  width: 480px;
+  height: 480px;
+  cursor: pointer;
+  justify-content: center;
+  background-image: url('./images/nine_boxBodyIn_0.png');
+
+  background-repeat: no-repeat;
+  display: inline-block;
+}
+
+/* .selected-product {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+} */
+.selected-product-image {
+  border-radius: 5%;
+  margin-top: 8px;
+  margin-left: 9px;
+
+  width: 150px;
+  height: 150px;
+}
+
+
+/* //sub// */
+#subscribe-form {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+#email {
+  padding: 10px;
+}
+
+.subButton {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: rgb(245, 245, 245);
+  border: none;
+  cursor: pointer;
+}
+.subh1{
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+#message {
+  font-weight: bold;
+}

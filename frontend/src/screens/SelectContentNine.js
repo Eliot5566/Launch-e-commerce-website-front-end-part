@@ -13,7 +13,6 @@ import { useContext } from 'react';
 
 import 'animate.css';
 
-
 function ProgressBar() {
   // const { data } = useContext(ProgressContext);
   // const [CurrentStep, setCurrentStep] = useState(1);
@@ -31,14 +30,14 @@ function ProgressBar() {
   );
 }
 
-export default function SelectContentFour() {
+export default function SelectContentNine() {
   const { state, dispatch } = useContext(Store);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const { boxType } = useParams();
   const [isNextButtonVisible, setNextButtonVisible] = useState(false);
   const navigate = useNavigate();
 
-   // 定義一個狀態來存儲產品數據
+  // 定義一個狀態來存儲產品數據
   const [products, setProducts] = useState([]);
 
   // 使用axios從API獲取產品數據
@@ -49,7 +48,6 @@ export default function SelectContentFour() {
           'https://last-hx4j.onrender.com/api/products'
         );
         setProducts(result.data);
-        setProducts(result.data);
       } catch (err) {
         console.error('獲取產品數據時出錯：', err);
       }
@@ -57,9 +55,10 @@ export default function SelectContentFour() {
     fetchData();
   }, []);
 
+  // 點擊產品時的處理函數
   const handleProductSelect = (product) => {
-    if (state.selectedProducts.length >= 4) {
-      // 已選擇的產品數量達到4個，顯示錯誤提示
+    if (state.selectedProducts.length >= 9) {
+      // 已選擇的產品數量達到9個，顯示錯誤提示
       alert('數量已達到上限！');
       return;
     }
@@ -67,7 +66,7 @@ export default function SelectContentFour() {
     // 使用dispatch將產品添加到全局狀態中
     dispatch({ type: 'ADD_SELECTED_PRODUCT', payload: { ...product, qty: 1 } });
 
-    if (state.selectedProducts.length === 3) {
+    if (state.selectedProducts.length === 8) {
       setNextButtonVisible(true);
     }
   };
@@ -82,12 +81,12 @@ export default function SelectContentFour() {
   };
 
   const handleNextButtonClick = () => {
-    const userResponse = window.confirm('是否需要禮盒卡片？');
+    const userResponse = window.confirm('是否需要加入禮盒卡片？');
 
     if (userResponse) {
-      navigate(`/giftcard`);
+      navigate(`/giftcard9`);
     } else {
-      navigate(`/cardboxdetail`);
+      navigate(`/cardboxdetail9`);
     }
   };
 
@@ -132,18 +131,18 @@ export default function SelectContentFour() {
         </div>
         <p>*點選商品添加至格子中</p>
         {/* <div className="selected-four-box d-flex justify-content-center"> */}
-        <div className="selected-four-box">
-          {Array.from({ length: 2 }).map((_, rowIndex) => (
+        <div className="selected-nine-box">
+          {Array.from({ length: 3 }).map((_, rowIndex) => (
             <div key={rowIndex} className="image-row">
-              {[0, 1].map((colIndex) => {
+              {[0, 1, 2].map((colIndex) => {
                 const selectedProduct =
-                  state.selectedProducts[rowIndex * 2 + colIndex];
+                  state.selectedProducts[rowIndex * 3 + colIndex];
                 return (
                   <img
                     key={colIndex}
                     src={selectedProduct?.product_package || transparent}
                     className="selected-product-image"
-                    alt={`selected product ${rowIndex * 2 + colIndex}`}
+                    alt={`selected product ${rowIndex * 3 + colIndex}`}
                     onClick={() => handleProductRemove(selectedProduct)}
                   />
                 );

@@ -1,3 +1,4 @@
+// 导入其他必要的模块
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
@@ -12,7 +13,6 @@ import { Store } from '../Store';
 import { useContext } from 'react';
 
 import 'animate.css';
-
 
 function ProgressBar() {
   // const { data } = useContext(ProgressContext);
@@ -31,17 +31,17 @@ function ProgressBar() {
   );
 }
 
-export default function SelectContentFour() {
+export default function SelectContentSix() {
   const { state, dispatch } = useContext(Store);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const { boxType } = useParams();
   const [isNextButtonVisible, setNextButtonVisible] = useState(false);
   const navigate = useNavigate();
 
-   // 定義一個狀態來存儲產品數據
+  // 定义一个状态来存储产品数据
   const [products, setProducts] = useState([]);
 
-  // 使用axios從API獲取產品數據
+  // 使用axios从API获取产品数据
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -49,31 +49,30 @@ export default function SelectContentFour() {
           'https://last-hx4j.onrender.com/api/products'
         );
         setProducts(result.data);
-        setProducts(result.data);
       } catch (err) {
-        console.error('獲取產品數據時出錯：', err);
+        console.error('获取产品数据时出错：', err);
       }
     };
     fetchData();
   }, []);
 
   const handleProductSelect = (product) => {
-    if (state.selectedProducts.length >= 4) {
-      // 已選擇的產品數量達到4個，顯示錯誤提示
+    if (state.selectedProducts.length >= 6) {
+      // 已选择的产品数量达到4个，显示错误提示
       alert('數量已達到上限！');
       return;
     }
 
-    // 使用dispatch將產品添加到全局狀態中
+    // 使用dispatch将产品添加到全局状态中
     dispatch({ type: 'ADD_SELECTED_PRODUCT', payload: { ...product, qty: 1 } });
 
-    if (state.selectedProducts.length === 3) {
+    if (state.selectedProducts.length === 5) {
       setNextButtonVisible(true);
     }
   };
 
   const handleProductRemove = (product) => {
-    // 使用dispatch將產品從全局狀態中移除
+    // 使用dispatch将产品从全局状态中移除
     dispatch({ type: 'REMOVE_SELECTED_PRODUCT', payload: product });
   };
 
@@ -82,12 +81,12 @@ export default function SelectContentFour() {
   };
 
   const handleNextButtonClick = () => {
-    const userResponse = window.confirm('是否需要禮盒卡片？');
+    const userResponse = window.confirm('是否需要加入禮盒卡片？');
 
     if (userResponse) {
-      navigate(`/giftcard`);
+      navigate(`/giftcard6`);
     } else {
-      navigate(`/cardboxdetail`);
+      navigate(`/cardboxdetail6`);
     }
   };
 
@@ -99,7 +98,7 @@ export default function SelectContentFour() {
       0
     );
 
-    // 更新禮盒價格到全局狀態
+    // 更新禮盒價格到全局状态
     dispatch({
       type: 'UPDATE_GIFT_BOX_PRICE',
       payload: selectedProductsTotalPrice,
@@ -132,18 +131,18 @@ export default function SelectContentFour() {
         </div>
         <p>*點選商品添加至格子中</p>
         {/* <div className="selected-four-box d-flex justify-content-center"> */}
-        <div className="selected-four-box">
+        <div className="selected-six-box">
           {Array.from({ length: 2 }).map((_, rowIndex) => (
             <div key={rowIndex} className="image-row">
-              {[0, 1].map((colIndex) => {
+              {[0, 1,2].map((colIndex) => {
                 const selectedProduct =
-                  state.selectedProducts[rowIndex * 2 + colIndex];
+                  state.selectedProducts[rowIndex * 3 + colIndex];
                 return (
                   <img
                     key={colIndex}
                     src={selectedProduct?.product_package || transparent}
                     className="selected-product-image"
-                    alt={`selected product ${rowIndex * 2 + colIndex}`}
+                    alt={`selected product ${rowIndex * 3 + colIndex}`}
                     onClick={() => handleProductRemove(selectedProduct)}
                   />
                 );
@@ -156,7 +155,7 @@ export default function SelectContentFour() {
       <div className="category-buttons m-3 text-center">
         <button
           className={
-            selectedCategory === 'all'
+            selectedCategory === '全部'
               ? 'btn-color me-2'
               : 'btn-cat-color me-2'
           }

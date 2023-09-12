@@ -1,4 +1,5 @@
 import Button from 'react-bootstrap/Button';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import './product.css';
 import './GiftProducts.css';
@@ -29,20 +30,17 @@ function GiftProducts(props) {
       payload: { ...item, quantity },
     });
   };
-
+  if (product._id === 20 || product._id === 21 || product._id === 22) {
+    return null;
+  }
   return (
     <div className="gift-product">
-      <img
-        src={product.gift_product}
-        className="card-img-tops"
-        alt={product.name}
-      />
+      <img src={product.gift_product} className="card-img-tops" alt={product.name} />
       <p className="product-name">{product.name}</p>
-      {/* <strong className="product-price">{product.price}</strong> */}
-
       <Button onClick={() => addToCartHandler(product)}>+</Button>
     </div>
   );
 }
 
 export default GiftProducts;
+

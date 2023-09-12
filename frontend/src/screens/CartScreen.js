@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Store } from '../Store';
 import { Helmet } from 'react-helmet-async';
 import Row from 'react-bootstrap/Row';
@@ -8,20 +8,25 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import './rabbit.css';
 
 export default function CartScreen() {
   const navigate = useNavigate();
-  // 這裡的state是一個物件，裡面有userInfo和cart兩個屬性
-  // 這裡的dispatch是一個函式，裡面有一個參數action   action是一個物件，裡面有type和payload兩個屬性
-  //使用解構賦值將 ctxDispatch 從 dispatch 屬性中提取出來，並將其重新命名為 ctxDispatch
-  //ctxDispatch 是 dispatch 函式的一個引用，用於發送動作以更新全局狀態
   const { state, dispatch: ctxDispatch } = useContext(Store);
-  // 這裡的state是一個物件，裡面有userInfo和cart兩個屬性
-  //使用解構賦值將 cart 從 state 屬性中提取出來，並將其重新命名為 cart
-  //將其解構為 cartItems 變數  cartItems 變數將包含購物車中的商品項目數據。
   const {
     cart: { cartItems },
+    selectedProducts,
+    selectedCard,
+    cardContent,
   } = state;
+  const [showProductContent, setShowProductContent] = useState({});
+
+  const toggleProductContent = (itemId) => {
+    setShowProductContent((prev) => ({
+      ...prev,
+      [itemId]: !prev[itemId],
+    }));
+  };
 
   const updateCartHandler = async (item, quantity) => {
     const { data } = await axios.get(
@@ -46,8 +51,8 @@ export default function CartScreen() {
     navigate('/signin?redirect=/shipping');
   };
 
-  return (
-    <div>
+return (
+    <div className=''>
       <Helmet>
         <title>購物車內容</title>
       </Helmet>
@@ -55,7 +60,21 @@ export default function CartScreen() {
       <Row>
         <Col md={8}>
           {cartItems.length === 0 ? (
-            <div>購物車是空的</div>
+          <div className='allForRabbit  '>
+            
+            <div className="clouds"></div>
+<div className='rabbit'></div>
+{/* <div className="clouds"></div> */}
+
+{/* <div className='rabbit'></div> */}
+{/* <div className="clouds"></div> */}
+
+{/* <div className='rabbit'></div> */}
+{/* <div className="clouds"></div> */}
+<br/>
+            <div className='carp'>購物車目前空空的，快點去挑選喜歡的產品</div>
+            </div>
+
           ) : (
             <ListGroup>
               {cartItems.map((item) => (
@@ -66,7 +85,12 @@ export default function CartScreen() {
                         src={item.image}
                         alt={item.name}
                         className="img-fluid rounded img-thumbnail"
-                      ></img>{' '}
+                        onClick={() => {
+                          if (item.isGiftBox) {
+                            toggleProductContent(item._id);
+                          }
+                        }}
+                      />
                       <Link to={`/product/${item.slug}`}>{item.name}</Link>
                     </Col>
                     <Col md={3}>
@@ -78,8 +102,8 @@ export default function CartScreen() {
                         disabled={item.quantity === 1}
                       >
                         <i className="fas fa-minus-circle"></i>
-                      </Button>{' '}
-                      <span>{item.quantity}</span>{' '}
+                      </Button>
+                      <span>{item.quantity}</span>
                       <Button
                         onClick={() =>
                           updateCartHandler(item, item.quantity + 1)
@@ -99,6 +123,27 @@ export default function CartScreen() {
                       </Button>
                     </Col>
                   </Row>
+                  {item.isGiftBox && showProductContent[item._id] && (
+                    <div>
+                      <h4>禮盒內容：</h4>
+                      {selectedProducts.map((selectedProduct) => (
+                        <div
+                          key={selectedProduct._id}
+                          className="product-details"
+                        >
+                          <img
+                            src={selectedProduct.image}
+                            alt={`selected product ${selectedProduct._id}`}
+                          />
+                          <h4>{selectedProduct.slug}</h4>
+                          {/* <p>介紹：{selectedProduct.description}</p> */}
+                        </div>
+                      ))}
+                      <h4>卡片內容：</h4>
+                      <p>{selectedCard}</p>
+                      <p>{cardContent}</p>
+                    </div>
+                  )}
                 </ListGroup.Item>
               ))}
             </ListGroup>
@@ -110,11 +155,12 @@ export default function CartScreen() {
               <ListGroup variant="flush">
                 <ListGroup.Item>
                   <h3>
-                    {/* // cartItems是一個陣列，裡面放的是物件 reduce 是一個函式，裡面有兩個參數，a和c a是一個數字，c是一個物件
-                    // a + c.quantity 是一個數字，代表購物車中的商品總數 0是初始值  */}
                     商品數量 ({cartItems.reduce((a, c) => a + c.quantity, 0)}{' '}
                     件) : NT$&nbsp;
-                    {cartItems.reduce((a, c) => a + c.price * c.quantity, 0)}
+                    {cartItems.reduce(
+                      (a, c) => a + c.price * c.quantity,
+                      0
+                    )}
                   </h3>
                 </ListGroup.Item>
                 <ListGroup.Item>
@@ -137,3 +183,4 @@ export default function CartScreen() {
     </div>
   );
 }
+

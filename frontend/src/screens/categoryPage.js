@@ -11,16 +11,16 @@ function Category() {
   const { data } = useContext(CategoryContext);
   return (
     <>
-      <div className="CATtitle p-2 position-relative">{data}</div>
+      <div className="CATtitle p-2 position-relative" style={{zIndex:'2'}}>{data}</div>
       <div
-        className="CATtitle position-absolute d-none d-md-block"
+        className="CATtitle position-absolute d-none d-lg-block"
         style={{
           height: '12rem',
           width: '2rem',
-          opacity: '0.2',
-          backgroundColor: '#e66465',
+          backgroundColor: '#fcdde2',
           top: '8%',
           right: '25%',
+          zIndex:'1'
         }}
       >
         &nbsp;
@@ -38,7 +38,7 @@ function Category() {
 // setColor 將顏色設置為默認顏色，無論用戶點擊的是哪個商品類別 (這段不存在沒有影響，移除了)
 function CategoryBar() {
   const { data, setData } = useContext(CategoryContext);
-  const [color, setColor] = useState('#b95151'); //初始被選到的顏色
+  const [color, setColor] = useState('#9A2540'); //初始被選到的顏色
   const [selector, setSelector] = useState('所有商品'); //初始被選到的文字
   const textColor = (x) =>
     x === selector ? { color: color } : { color: '#83818c' };
@@ -161,6 +161,11 @@ function ProductCard({ category }) {
         } else {
           response = await axios.get(`https://last-hx4j.onrender.com/products`);
         }
+        // 過濾掉禮盒 9 /11新增
+        const filteredProducts = response.data.filter((product) => {
+          const excludedIds = [20, 21, 22]; // 需要排除的 _id
+          return !excludedIds.includes(product._id);
+        });
         setProducts(response.data);
       } catch (error) {
         console.error('Error fetching products:', error);
@@ -214,10 +219,10 @@ function ProductCard({ category }) {
                 {/* <a className="text">了解更多</a> */}
               </div>
               <div className="card-body">
-                <h4 className="card-title mb-3">{product.name}</h4>
+                <h4 className="card-title mb-3">{product.slug}</h4>
 
                 <Link to={`/product/${product._id}`}>
-                  <button className="btn btn-secondary w-75 fs-5">
+                  <button className="buy btn btn-secondary w-75 fs-5">
                     <span>立即選購 </span>
                   </button>
                 </Link>
@@ -228,6 +233,8 @@ function ProductCard({ category }) {
                 >
                   <span>立即選購 </span>
                 </a> */}
+
+
               </div>
             </div>
           </div>
@@ -264,16 +271,3 @@ function CategoryPage() {
 }
 
 export default CategoryPage;
-
-// 筆記差別
-// useEffect(() => {
-//     fetch('http://localhost:2407/products')
-//         .then(res => res.json())
-//         .then(data => setData(data))
-//         .catch(err => console.log(err));
-// }, [])
-
-// fetch('http://localhost:2407/products')
-//     .then(res => res.json())
-//     .then(data => setData(data))
-//     .catch(err => console.log(err));

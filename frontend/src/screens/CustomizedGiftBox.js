@@ -1,44 +1,39 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Row, Col, Card, ListGroup, Form } from 'react-bootstrap';
 import fourBoxImage from '../images/four_boxBodyIn_0.png';
 import sixBoxImage from '../images/six_boxBodyIn_0.png';
 import nineBoxImage from '../images/nine_boxBodyIn_0.png';
 import { useState } from 'react';
+import { useContext } from 'react';
+import { Store } from '../Store';
 import { Link } from 'react-router-dom';
 
 import 'animate.css';
 
-//製作一個客製化禮盒頁面
-//使用者可以在這個頁面上選擇禮盒的規格
-//使用者可以在這個頁面上選擇禮盒的內容
-
-//使用者可以在這個頁面上選擇禮盒的卡片
-
-//第一步 選擇禮盒大小 分為三種 4格 6格 9格
-//第二步 選擇禮盒內容 分為三種 4格 6格 9格 點選商品後可以加入禮盒
-//再次點選商品可以取消加入禮盒
-
-//第三步 選擇禮盒卡片 讓使用者決定要不要加入卡片
-
-//第四步 確認禮盒內容 顯示禮盒內容 顯示禮盒包裝 顯示禮盒卡片 確認禮盒內容後 加入購物車
-
-//第五步 確認購物車內容 顯示禮盒內容 顯示禮盒包裝 顯示禮盒卡片 顯示禮盒總價 確認購物車內容後 結帳
-
-//第六步 結帳 顯示禮盒內容 顯示禮盒包裝 顯示禮盒卡片 顯示禮盒總價 顯示結帳資訊 確認結帳資訊後 進入付款頁面
-
-//第七步 付款 顯示禮盒內容 顯示禮盒包裝 顯示禮盒卡片 顯示禮盒總價 顯示結帳資訊 顯示付款方式 確認付款方式後 進入付款頁面
-
-//開始寫程式碼
-// 第一步
-// 製作一個禮盒大小的選擇區域
-// 製作一個禮盒內容的選擇區域
-// 製作一個禮盒卡片的選擇區域
-// 製作一個禮盒內容確認區域
-// 製作一個購物車內容確認區域
-// 製作一個結帳資訊確認區域
-// 製作一個付款方式確認區域
+function ProgressBar() {
+  // const { data } = useContext(ProgressContext);
+  // const [CurrentStep, setCurrentStep] = useState(1);
+  return (
+    <>
+      <div className="container">
+        <ul
+          className="progress bg-body "
+          style={{ padding: '5rem', fontSize: '1em' }}
+        >
+          <li className="active">選擇規格</li>
+          <li className="">選擇商品</li>
+          <li className="">貼心小卡</li>
+          <li className="">確認內容</li>
+        </ul>
+      </div>
+    </>
+  );
+}
 
 export default function CustomizedGiftBox() {
+  const { state, dispatch } = useContext(Store);
+
+
   const [selectedBox, setSelectedBox] = useState('null');
   const [showNextButton, setShowNextButton] = useState(false);
   const handleBoxChange = (option) => {
@@ -48,40 +43,45 @@ export default function CustomizedGiftBox() {
     // 點選禮盒後 添加 動畫
   };
 
+  useEffect(() => {
+    dispatch({ type: 'SET_SELECTED_BOX_SIZE', payload: selectedBox });
+  }, [dispatch, selectedBox]);
+
   return (
     <div>
       <Row>
         <Col md={12}>
-          <h4 className="text-center mb-3">選擇禮盒規格</h4>
+          <ProgressBar />
           <Row>
             {/* //新增區域 放置下一步按鈕 */}
-            <Col className="text-center m-5">
-              {/* 根据 showNextButton 的状态显示下一步按钮 靠右 */}
-              {/* 幫我把showNextButton放到畫面右邊 */}
-
+            <Col className="text-center mb-3" style={{ minHeight: '55px' }}>
               {showNextButton && (
-                <button className="btn btn-primary nbt">
-                  {' '}
-                  <Link
-                    to={`/select-content/${selectedBox}`}
-                    className="btn btn-primary nbt"
-                  >
-                    下一步
-                  </Link>
-                </button>
+                <div
+                  className="d-flex justify-content-end align-items-center"
+                  style={{ height: '100%' }}
+                >
+                  <button className="btn-color">
+                    <Link
+                      to={`/select-content/${selectedBox}`}
+                      className="btn-color"
+                    >
+                      下一步
+                    </Link>
+                  </button>
+                </div>
               )}
             </Col>
           </Row>
 
           <Row>
-            <Col className="text-center">
+            <Col className="text-center mb-3">
               <p>四格小資組合</p>
               <p>NT$480</p>
               <label>
-                <div className="d-flex flex-column align-items-center">
-                  <img 
+                <div className="d-flex flex-column align-items-center mt-3">
+                  <img
                     src={fourBoxImage}
-                    alt="禮盒大小"
+                    alt="四格小資組合"
                     height="200vh"
                     onClick={() => handleBoxChange('four')}
                     className={`box-image ${
@@ -101,14 +101,14 @@ export default function CustomizedGiftBox() {
                 </div>
               </label>
             </Col>
-            <Col className="text-center">
-              <p>六格普通組合</p>
+            <Col className="text-center mb-3">
+              <p>六格家庭組合</p>
               <p>NT$680</p>
               <label>
-                <div className="d-flex flex-column align-items-center">
+                <div className="d-flex flex-column align-items-center mt-3">
                   <img
                     src={sixBoxImage}
-                    alt="禮盒大小"
+                    alt="六格家庭組合"
                     height="200vh"
                     onClick={() => handleBoxChange('six')}
                     className={`box-image ${
@@ -120,7 +120,7 @@ export default function CustomizedGiftBox() {
 
                   <Form.Check
                     type="radio"
-                    label="六格小資組合  NT$680"
+                    label="六格家庭組合  NT$680"
                     price="680"
                     name="formHorizontalRadios"
                     id="formHorizontalRadios2"
@@ -129,14 +129,14 @@ export default function CustomizedGiftBox() {
                 </div>
               </label>
             </Col>
-            <Col className="text-center">
-              <p>九格富翁組合</p>
-              <p>NT$880</p>
+            <Col className="text-center mb-3">
+              <p>九格派對組合</p>
+              <p>NT$980</p>
               <label>
-                <div className="d-flex flex-column align-items-center">
+                <div className="d-flex flex-column align-items-center mt-3">
                   <img
                     src={nineBoxImage}
-                    alt="禮盒大小"
+                    alt="九格派對組合"
                     height="270vh"
                     onClick={() => handleBoxChange('nine')}
                     className={`box-image ${
@@ -148,8 +148,8 @@ export default function CustomizedGiftBox() {
 
                   <Form.Check
                     type="radio"
-                    label="九格小資組合  NT$880"
-                    price="880"
+                    label="九格派對組合  NT$980"
+                    price="980"
                     name="formHorizontalRadios"
                     id="formHorizontalRadios3"
                     style={{ display: 'none' }}

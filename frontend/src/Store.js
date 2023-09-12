@@ -3,6 +3,14 @@ export const Store = createContext();
 
 // initialsSte是一個物件，裡面有userInfo和cart兩個屬性
 const initialState = {
+  selectedBoxSize: null, // 用户选择的盒子大小
+  giftBoxPrice: 0, // 禮盒的价格
+  giftBoxQuantity: 0, // 禮盒的數量
+  selectedProducts: [], // 用户选择的产品
+  selectedCard: '', // 用户选择的卡片
+  cardContent: '', // 卡片內容
+  isConfirmed: false, // 是否已确认卡片內容
+  // giftBox: [], // 添加空的 giftBox 属性
   // userInfo是一個物件，裡面有name、email、isAdmin、token四個屬性
   userInfo: localStorage.getItem('userInfo')
     ? JSON.parse(localStorage.getItem('userInfo'))
@@ -22,6 +30,36 @@ const initialState = {
     cartItems: localStorage.getItem('cartItems')
       ? JSON.parse(localStorage.getItem('cartItems'))
       : [],
+    itemSum: 0,
+    itemsPrice: 0,
+
+    // itemsPrice: cartItems.reduce((a, c) => a + c.price * c.qty, 0),
+    // shippingPrice: itemsPrice > 100 ? 0 : 10,
+
+   
+    // totalPrice: itemsPrice + shippingPrice + giftBoxPrice,
+    // totalPrice: itemsPrice,
+    // shippingAddress: localStorage.getItem('shippingAddress')
+    //   ? JSON.parse(localStorage.getItem('shippingAddress'))
+    //   : {},
+    // paymentMethod: localStorage.getItem('paymentMethod')
+    //   ? localStorage.getItem('paymentMethod')
+    //   : '',
+    // cartItems: localStorage.getItem('cartItems')
+    //   ? JSON.parse(localStorage.getItem('cartItems'))
+    //   : [],
+
+    // 請正確設置itemsPrice 確保加入訂單 不會出現NaN
+
+    
+    giftBox: {
+      name: 'Custom Gift Box',
+      image: '',
+      price: 0,
+      quantity: 0,
+      _id:20,
+      
+    }, // 添加空的 giftBox 属性
   },
 };
 // reducer是一個函式，裡面有兩個參數，state和action
@@ -83,11 +121,71 @@ function reducer(state, action) {
           shippingAddress: action.payload,
         },
       };
+    case 'ADD_SELECTED_PRODUCT':
+      return {
+        ...state,
+        selectedProducts: [...state.selectedProducts, action.payload],
+      };
+    case 'REMOVE_SELECTED_PRODUCT':
+      return {
+        ...state,
+        selectedProducts: state.selectedProducts.filter(
+          (product) => product._id !== action.payload._id
+        ),
+      };
     case 'SAVE_PAYMENT_METHOD':
       return {
         ...state,
         cart: { ...state.cart, paymentMethod: action.payload },
       };
+    case 'UPDATE_SELECTED_CARD':
+      return {
+        ...state,
+        selectedCard: action.payload,
+      };
+    case 'UPDATE_CARD_CONTENT':
+      return {
+        ...state,
+        cardContent: action.payload,
+      };
+    case 'UPDATE_CONFIRMED':
+      return {
+        ...state,
+        isConfirmed: true,
+      };
+    case 'UPDATE_GIFT_BOX_PRICE':
+      // 更新禮盒價格
+      return {
+        ...state,
+        giftBox: {
+          ...state.giftBox,
+          price: action.payload,
+        },
+      };
+    case 'UPDATE_GIFT_BOX_QUANTITY':
+      return {
+        ...state,
+        giftBoxQuantity: action.payload,
+      };
+    case 'ADD_GIFT_BOX':
+      return {
+        ...state,
+        giftBoxQuantity: state.giftBoxQuantity + 1, // 增加禮盒數量
+      };
+    case 'REMOVE_GIFT_BOX':
+      return {
+        ...state,
+        giftBoxQuantity: state.giftBoxQuantity - 1, // 減少禮盒數量
+      };
+    case 'UPDATE_CART_GIFT_BOX':
+      // 更新購物車中的禮盒信息
+      return {
+        ...state,
+        giftBox: action.payload,
+        
+      };
+      case' SET_SELECTED_BOX_SIZE':
+      return { ...state, selectedBoxSize: action.payload };
     default:
       return state;
   }

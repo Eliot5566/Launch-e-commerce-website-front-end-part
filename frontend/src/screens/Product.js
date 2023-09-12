@@ -12,6 +12,7 @@ function Product(props) {
     cart: { cartItems },
   } = state;
 
+
   const addToCartHandler = async (item) => {
     const quantity = parseInt(input); // 从input中获取商品数量
     if (isNaN(quantity) || quantity < 1) {
@@ -31,6 +32,8 @@ function Product(props) {
           type: 'CART_ADD_ITEM',
           payload: { ...item, quantity: totalQuantity },
         });
+        // 提示成功加入購物車
+        window.alert('成功加入購物車!');
       }
     } else {
       if (quantity > productInStock) {
@@ -117,43 +120,42 @@ function Product(props) {
             <span className="mb-3">{data.category}</span>
             <div className="border-top">&nbsp;</div>
           </div>
-          <div className="row">
-            {/* 待調整 css*/}
-            <div className="col-sm-12 col-md-6 ">
+          <div className="row mt-1">
+            <div className="col-md-12 col-lg-6 align-items-center justify-content-center p-0" >
               <img
                 alt="產品圖片"
                 src={data.image}
-                className="img-fluid object-fit-contain"
-                style={{ width: '100vw', height: '50vh' }}
+                className="img-fluid"
+                style={{ width: "100%", height: "50vh" }}
               />
-              {/* 待調整 css*/}
             </div>
             <div
-              className="col-sm-12 col-md-6 p-5"
+              className="col-md-12 col-lg-6 p-5"
               style={{
                 borderRadius: '0% 30% 30% 0%',
-                backgroundColor: 'rgba(230, 100, 101, 0.2)',
+                backgroundColor: '#fcdde2',
+                height: '50vh'
               }}
             >
               <Helmet>
                 <title>{data.name}</title>
               </Helmet>
               <h1>{data.name}</h1>
-              {/* 待調整 css*/}
-              <p className="fs-5 fw-bold text-danger">
-                庫存：{data.countInStock}
-              </p>
-              <p className="fs-3 fw-bold ">${data.price}</p>
-              <p className="mt-5 fs-5">{data.description}</p>
+              <div className="d-flex align-items-baseline">
+                <div className="fs-2 fw-bold">${data.price}</div>
+                <div className="fs-5 fw-bold ms-3" style={{color: '#9A2540'}}>庫存：{data.countInStock}</div>
+              </div>
+              <p className="fs-5">{data.description}</p>
               <button
                 onClick={minus}
-                className="btn btn-warning fw-bolder rounded-circle fs-3"
-                style={{ width: '3rem', height: '3rem', lineHeight: '1rem' }}
+                className="btn btn-light fw-bolder rounded-circle fs-5"
+                style={{ width: '2.5rem', height: '2.5rem', lineHeight: '1rem' }}
+                
               >
-                {/* 待調整 css*/}-
+                -
               </button>
               <input
-                className="fw-bolder fs-3 m-1 text-center input-number"
+                className="fw-bolder fs-5 m-1 text-center input-number"
                 value={input}
                 readOnly
                 min={min}
@@ -162,20 +164,20 @@ function Product(props) {
               />
               <button
                 onClick={plus}
-                className="btn btn-warning fw-bolder rounded-circle fs-3"
-                style={{ width: '3rem', height: '3rem', lineHeight: '1rem' }}
+                className="btn btn-light fw-bolder rounded-circle fs-5"
+                style={{ width: '2.5rem', height: '2.5rem', lineHeight: '1rem' }}
               >
                 +
               </button>
-              <div className="col-6">
-                <button
-                  onClick={() => addToCartHandler(data)} // 传递data作为参数
-                  type="button"
-                  className="btn btn-danger fs-5 mt-5"
-                >
-                  加入購物車
-                </button>
-              </div>
+              <button
+                onClick={() => addToCartHandler(data)} // 传递data作为参数
+                type="button"
+                className="btn btn-danger btn-small ms-4"
+                style={{backgroundColor: '#9A2540'}}
+              >
+                加入購物車
+              </button>
+
             </div>
           </div>
         </div>
