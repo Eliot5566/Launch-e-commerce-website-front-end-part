@@ -166,7 +166,7 @@ function ProductCard({ category }) {
           const excludedIds = [20, 21, 22]; // 需要排除的 _id
           return !excludedIds.includes(product._id);
         });
-        setProducts(response.data);
+        setProducts(filteredProducts);
       } catch (error) {
         console.error('Error fetching products:', error);
       }

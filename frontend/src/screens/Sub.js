@@ -15,7 +15,7 @@ export default function Sub() {
 <body>
 <link rel="stylesheet" href="./style.css"></link>
     <h1 className='subh1 mt-3'>訂閱我們的最新消息</h1>
-    <form id="subscribe-form" action="/subscribe" method="post">
+    <form id="subscribe-form" action="https://last-hx4j.onrender.com/subscribe" method="post">
         <input type="email" id="email" name="email" placeholder="輸入你的電子郵件" />
         <button className='subButton' type="submit">訂閱</button>
     </form>
