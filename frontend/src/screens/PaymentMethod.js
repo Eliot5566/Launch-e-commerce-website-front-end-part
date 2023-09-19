@@ -84,6 +84,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import CheckoutSteps from '../components/CheckoutSteps';
 import { Store } from '../Store';
+import { Container } from 'react-bootstrap';
 
 export default function PaymentMethod() {
   const navigate = useNavigate();
@@ -108,7 +109,7 @@ export default function PaymentMethod() {
     navigate('/placeorder');
   };
   return (
-    <div>
+    <Container>
       <CheckoutSteps step1 step2 step3></CheckoutSteps>
       <div className="container small-container">
         <Helmet>
@@ -141,6 +142,6 @@ export default function PaymentMethod() {
           </div>
         </Form>
       </div>
-    </div>
+    </Container>
   );
 }

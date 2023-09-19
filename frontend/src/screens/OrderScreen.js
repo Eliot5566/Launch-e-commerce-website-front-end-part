@@ -14,9 +14,24 @@ import MessageBox from '../components/MessageBox';
 import { Store } from '../Store';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
+import { Container } from 'react-bootstrap';
 
 const clientId =
   'AYngKbWm4TYcnQURW3lDH60P0myyeMHowAHYDEz_oJ87IdUW71el5uPOt9FwbFTp5mPotEWGTOx0QxGm';
+function formatDateTime(dateTimeString) {
+  const options = {
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
+    timeZone: 'Asia/Taipei', // 指定您的時區，這裡是台北時區
+    // timeZoneName: 'short', 自動獲取使用者使區域設定的時區名稱
+  };
+
+  return new Date(dateTimeString).toLocaleString(undefined, options);
+}
 function reducer(state, action) {
   switch (action.type) {
     case 'FETCH_REQUEST':
@@ -114,12 +129,9 @@ export default function OrderScreen() {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
         //改
-        const { data } = await axios.get(
-          `https://last-hx4j.onrender.com/api/orders/${orderId}`,
-          {
-            headers: { authorization: `Bearer ${userInfo.token}` },
-          }
-        );
+        const { data } = await axios.get(`https://last-hx4j.onrender.com/api/orders/${orderId}`, {
+          headers: { authorization: `Bearer ${userInfo.token}` },
+        });
         data.order_items = JSON.parse(data.order_items);
         data.shipping_address = JSON.parse(data.shipping_address);
         console.log(data.shipping_address);
@@ -164,18 +176,19 @@ export default function OrderScreen() {
     } else {
       const loadPaypalScript = async () => {
         try {
-          const { data: clientId } = await axios.get(
-            'https://last-hx4j.onrender.com/api/keys/paypal',
-            {
-              headers: { authorization: `Bearer ${userInfo.token}` },
-            }
+          const { data: clientId } = await axios.get('https://last-hx4j.onrender.com/api/keys/paypal', {
+            headers: { authorization: `Bearer ${userInfo.token}` },
+          });
+          console.log(
+            123 +
+              'AYngKbWm4TYcnQURW3lDH60P0myyeMHowAHYDEz_oJ87IdUW71el5uPOt9FwbFTp5mPotEWGTOx0QxGm'
           );
-          console.log(123 + clientId);
 
           paypalDispatch({
             type: 'resetOptions',
             value: {
-              'client-id': clientId,
+              'client-id':
+                'AYngKbWm4TYcnQURW3lDH60P0myyeMHowAHYDEz_oJ87IdUW71el5uPOt9FwbFTp5mPotEWGTOx0QxGm',
               currency: 'TWD', // 設定貨幣
             },
           });
@@ -203,7 +216,7 @@ export default function OrderScreen() {
   ) : error ? (
     <MessageBox variant="danger">{error}</MessageBox>
   ) : (
-    <div>
+    <Container>
       <Helmet>
         <title>訂單 {orderId}</title>
       </Helmet>
@@ -245,7 +258,7 @@ export default function OrderScreen() {
                 </Card.Text>
                 {order.is_paid ? (
                   <MessageBox variant="success">
-                    已付款 {order.paid_at}
+                    已付款 {formatDateTime(order.paid_at)}
                   </MessageBox>
                 ) : (
                   <span>尚未付款</span>
@@ -330,6 +343,6 @@ export default function OrderScreen() {
           </Col>
         </Row>
       </PayPalScriptProvider>
-    </div>
+    </Container>
   );
 }

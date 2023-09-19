@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Card } from 'react-bootstrap';
+import { Card, Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { Row, Col } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
@@ -48,31 +48,62 @@ export default function PlaceOrder() {
   //晚點改回來
   cart.totalPrice = cart.itemsPrice + cart.shippingPrice;
   // cart.totalPrice = cart.itemsPrice;
-
-  cart.shippingPrice = cart.itemsPrice > 100 ? round2(0) : round2(10);
+  //滿百免運
+  cart.shippingPrice = cart.itemsPrice >= 100 ? round2(0) : round2(10);
 
   // console.log(userInfo.token);
+
+  // const placeOrderHandler = async () => {
+  //   try {
+  //     dispatch({ type: 'CREATE_REQUEST' });
+
+  //     const { data } = await Axios.post(
+  //       '/api/orders',
+  //       {
+  //         orderItems: cart.cartItems,
+  //         shippingAddress: cart.shippingAddress,
+  //         paymentMethod: cart.paymentMethod,
+  //         itemsPrice: cart.itemsPrice,
+  //         shippingPrice: cart.shippingPrice,
+  //         totalPrice: cart.totalPrice,
+  //       },
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${userInfo.token}`,
+  //         },
+  //       }
+  //     );
+  //     ctxDispatch({ type: 'CART_CLEAR' });
+  //     dispatch({ type: 'CREATE_SUCCESS' });
+  //     localStorage.removeItem('cartItems');
+  //     navigate(`/order/${data.order._id}`);
+  //   } catch (err) {
+  //     dispatch({ type: 'CREATE_FAIL' });
+  //     toast.error(err.response.data.message);
+  //   }
+  // };
 
   const placeOrderHandler = async () => {
     try {
       dispatch({ type: 'CREATE_REQUEST' });
 
-      const { data } = await Axios.post(
-        'https://last-hx4j.onrender.com/api/orders',
-        {
-          orderItems: cart.cartItems,
-          shippingAddress: cart.shippingAddress,
-          paymentMethod: cart.paymentMethod,
-          itemsPrice: cart.itemsPrice,
-          shippingPrice: cart.shippingPrice,
-          totalPrice: cart.totalPrice,
+      const orderData = {
+        orderItems: cart.cartItems,
+        shippingAddress: cart.shippingAddress,
+        paymentMethod: cart.paymentMethod,
+        itemsPrice: cart.itemsPrice,
+        shippingPrice: cart.shippingPrice,
+        totalPrice: cart.totalPrice,
+        selectedCard: state.selectedCard,
+        cardContent: state.cardContent,
+      };
+
+      const { data } = await Axios.post('https://last-hx4j.onrender.com/api/orders', orderData, {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
         },
-        {
-          headers: {
-            Authorization: `Bearer ${userInfo.token}`,
-          },
-        }
-      );
+      });
+
       ctxDispatch({ type: 'CART_CLEAR' });
       dispatch({ type: 'CREATE_SUCCESS' });
       localStorage.removeItem('cartItems');
@@ -90,7 +121,7 @@ export default function PlaceOrder() {
   }, [cart, navigate]);
 
   return (
-    <div>
+    <Container>
       <CheckoutSteps step1 step2 step3 step4></CheckoutSteps>
       <Helmet>
         <title>訂單明細</title>
@@ -200,6 +231,6 @@ export default function PlaceOrder() {
           </Card>
         </Col>
       </Row>
-    </div>
+    </Container>
   );
 }

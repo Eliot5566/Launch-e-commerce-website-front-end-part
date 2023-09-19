@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { Store } from '../Store';
 import CheckoutSteps from '../components/CheckoutSteps';
+import { Container } from 'react-bootstrap';
 
 export default function ShippingAddress() {
   const navigate = useNavigate();
@@ -60,7 +61,7 @@ export default function ShippingAddress() {
   };
 
   return (
-    <div>
+    <Container>
       <Helmet>
         <title>收貨地址</title>
       </Helmet>
@@ -129,6 +130,6 @@ export default function ShippingAddress() {
           </div>
         </Form>
       </div>
-    </div>
+    </Container>
   );
 }

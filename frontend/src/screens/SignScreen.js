@@ -10,28 +10,32 @@ import { Store } from '../Store';
 export default function SigninScreen() {
   const navigate = useNavigate();
   const { search } = useLocation();
+  // useLocation用來取得網址列的query string (search)
   const redirectInUrl = new URLSearchParams(search).get('redirect');
+  // new URLSearchParams(search)會回傳一個URLSearchParams物件
+  // get('redirect')會回傳query string裡redirect的值
   const redirect = redirectInUrl ? redirectInUrl : '/';
+  // 如果redirectInUrl有值就用redirectInUrl，沒有就用'/'
 
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [pwd, setPwd] = useState('');
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await Axios.post(
-        'https://last-hx4j.onrender.com/api/users/signin',
-        {
-          email,
-          password,
-        }
-      );
+      const { data } = await Axios.post('https://last-hx4j.onrender.com/api/users/signin', {
+        email,
+        pwd,
+      });
       //ctxDispatch是Store.js裡的dispatch function
       //用來更新Store.js裡的state userInfo
       ctxDispatch({ type: 'USER_SIGNIN', payload: data });
       localStorage.setItem('userInfo', JSON.stringify(data));
+      //為甚麼要存放在localStorage? 因為如果不存放在localStorage userInfo會消失
+      //每次重新整理頁面都會導致userInfo消失，因為重新整理頁面會導致 Store.js裡的state重置
+      //data 是一個物件，裡面有name、email、isAdmin、token四個屬性 (來自於api/users/signin)
 
       navigate(redirect || '/');
     } catch (err) {
@@ -42,6 +46,7 @@ export default function SigninScreen() {
   useEffect(() => {
     if (userInfo) {
       navigate(redirect);
+      // 如果userInfo有值就導向redirect (redirect是一個字串)
     }
   }, [navigate, redirect, userInfo]);
 
@@ -68,7 +73,7 @@ export default function SigninScreen() {
           <Form.Control
             type="password"
             required
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => setPwd(e.target.value)}
           />
         </Form.Group>
         <div className="mb-3">

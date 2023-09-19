@@ -65,14 +65,14 @@ function CategoryBar() {
         </p>
         <p
           onClick={() => handleItemClick('水饅頭')}
-          style={textColor('羊羹')}
+          style={textColor('水饅頭')}
           className="nav-item fw-bolder fs-4"
         >
           水饅頭
         </p>
         <p
           onClick={() => handleItemClick('羊羹')}
-          style={textColor('水饅頭')}
+          style={textColor('羊羹')}
           className="nav-item fw-bolder fs-4"
         >
           羊羹

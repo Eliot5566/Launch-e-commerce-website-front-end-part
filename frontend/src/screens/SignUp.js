@@ -16,26 +16,23 @@ export default function SignupScreen() {
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmpassword, setConfirmPassword] = useState('');
+  const [pwd, setPwd] = useState('');
+  const [confirmpwd, setConfirmPwd] = useState('');
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
   const submitHandler = async (e) => {
     e.preventDefault();
-    if (password !== confirmpassword) {
+    if (pwd !== confirmpwd) {
       toast.error('密碼不一致');
       return;
     }
     try {
-      const { data } = await Axios.post(
-        'https://last-hx4j.onrender.com/api/users/signup',
-        {
-          name,
-          email,
-          password,
-        }
-      );
+      const { data } = await Axios.post('https://last-hx4j.onrender.com/api/users/signup', {
+        name,
+        email,
+        pwd,
+      });
 
       // 在注册成功后，将用户令牌存储在本地存储中
       localStorage.setItem('userInfo', JSON.stringify(data));
@@ -94,22 +91,22 @@ export default function SignupScreen() {
           <Form.Control
             type="password"
             required
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => setPwd(e.target.value)}
           />
         </Form.Group>
         {/* //新增confirmpassword */}
-        <Form.Group className="mb-3" controlId="confirmpassword">
+        <Form.Group className="mb-3" controlId="confirmpwd">
           <Form.Label>再輸入一次密碼</Form.Label>
 
           <Form.Control
             type="password"
             required
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            onChange={(e) => setConfirmPwd(e.target.value)}
           />
         </Form.Group>
 
         <div className="mb-3">
-          <Button type="submit">Sign Up</Button>
+          <Button type="submit">送出</Button>
         </div>
         <div className="mb-3">
           已經有帳號了嗎?{' '}

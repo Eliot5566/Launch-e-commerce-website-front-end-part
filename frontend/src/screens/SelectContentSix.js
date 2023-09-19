@@ -1,79 +1,64 @@
-// 导入其他必要的模块
-import React, { useState, useEffect } from 'react';
-import { Row, Col, Button } from 'react-bootstrap';
-import { Link, useNavigate } from 'react-router-dom';
+// 第二步 六格禮盒 選擇商品
+import React, { useState, useEffect, useContext } from 'react';
+import { Container, Row, Col, Button } from 'react-bootstrap';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import logger from '../logger.js';
 import GiftProducts from '../components/GiftProducts';
-import { useReducer } from 'react';
-import { useParams } from 'react-router-dom';
 import transparent from '../images/transparent.png';
-import GiftBoxDetails from '../components/GiftBoxDetails';
 import { Store } from '../Store';
-import { useContext } from 'react';
-
+import MyProgress from '../components/MyProgress';
 import 'animate.css';
-
-function ProgressBar() {
-  // const { data } = useContext(ProgressContext);
-  // const [CurrentStep, setCurrentStep] = useState(1);
-  return (
-    <>
-      <div className="container">
-        <ul className="progress bg-body fs-5" style={{ padding: '5rem' }}>
-          <li className="done">選擇規格</li>
-          <li className="active">選擇商品</li>
-          <li className="">貼心小卡</li>
-          <li className="">確認內容</li>
-        </ul>
-      </div>
-    </>
-  );
-}
 
 export default function SelectContentSix() {
   const { state, dispatch } = useContext(Store);
+  const [currentStep, setCurrentStep] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState('all');
+  // 待確認刪除-boxType
   const { boxType } = useParams();
   const [isNextButtonVisible, setNextButtonVisible] = useState(false);
   const navigate = useNavigate();
 
-  // 定义一个状态来存储产品数据
-  const [products, setProducts] = useState([]);
+  // 定義一個狀態來存儲產品數據
+  const [products, setProducts6] = useState([]);
 
-  // 使用axios从API获取产品数据
+  // 使用axios從API獲取產品數據
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await axios.get(
-          'https://last-hx4j.onrender.com/api/products'
-        );
-        setProducts(result.data);
+        const result = await axios.get('https://last-hx4j.onrender.com/api/products'); // 替換成自己的API端點
+        setProducts6(result.data);
+        setProducts6(result.data);
       } catch (err) {
-        console.error('获取产品数据时出错：', err);
+        console.error('獲取產品數據時出錯：', err);
       }
     };
     fetchData();
   }, []);
 
+  // 點擊產品時的處理函數
   const handleProductSelect = (product) => {
-    if (state.selectedProducts.length >= 6) {
-      // 已选择的产品数量达到4个，显示错误提示
+    if (state.selectedProducts6.length >= 6) {
+      // 已選擇的產品數量達到6個，顯示錯誤提示
       alert('數量已達到上限！');
       return;
     }
 
-    // 使用dispatch将产品添加到全局状态中
-    dispatch({ type: 'ADD_SELECTED_PRODUCT', payload: { ...product, qty: 1 } });
+    // 使用dispatch將產品添加到全局狀態中
+    dispatch({
+      type: 'ADD_SELECTED_PRODUCT6',
+      payload: { ...product, qty: 1 },
+    });
 
-    if (state.selectedProducts.length === 5) {
+    if (state.selectedProducts6.length === 5) {
       setNextButtonVisible(true);
     }
   };
 
-  const handleProductRemove = (product) => {
-    // 使用dispatch将产品从全局状态中移除
-    dispatch({ type: 'REMOVE_SELECTED_PRODUCT', payload: product });
+  const handleProductRemove = (productToRemove) => {
+    if (productToRemove) {
+      // 使用dispatch將產品從全局狀態中移除
+      dispatch({ type: 'REMOVE_SELECTED_PRODUCT6', payload: productToRemove });
+    }
   };
 
   const handleCategoryChange = (category) => {
@@ -98,7 +83,7 @@ export default function SelectContentSix() {
       0
     );
 
-    // 更新禮盒價格到全局状态
+    // 更新禮盒價格到全局狀態
     dispatch({
       type: 'UPDATE_GIFT_BOX_PRICE',
       payload: selectedProductsTotalPrice,
@@ -106,58 +91,70 @@ export default function SelectContentSix() {
   }, [state.selectedProducts, dispatch]);
 
   return (
-    <div>
+    <Container>
       <Row>
         <Col md={12}>
-          <ProgressBar />
+          <MyProgress currentStep={currentStep} />
         </Col>
       </Row>
-      <div className="selected-products ">
-        <div className="d-flex justify-content-between align-items-center mb-3">
+      <Row className="selected-products mt-3">
+        <Col className="d-flex justify-content-between align-items-center">
           <div className="next-button">
-            {/* 導航回“giftbox”頁面 */}
-            <Link to={`/giftbox`} className="btn-color">
-              上一步
+            <Link to={`/giftbox`}>
+              <Button
+                variant="color"
+                style={{ backgroundColor: '#9a2540', color: 'white' }}
+                className="btn-color"
+              >
+                上一步
+              </Button>
             </Link>
           </div>
           <div className="next-button">
             {isNextButtonVisible && (
-              // 顯示“下一步”按鈕，點擊時觸發 handleNextButtonClick 函數
-              <Button className="btn-color" onClick={handleNextButtonClick}>
+              <Button
+                variant="color"
+                style={{ backgroundColor: '#9a2540', color: 'white' }}
+                className="btn-color"
+                onClick={handleNextButtonClick}
+              >
                 下一步
               </Button>
             )}
           </div>
-        </div>
-        <p>*點選商品添加至格子中</p>
-        {/* <div className="selected-four-box d-flex justify-content-center"> */}
-        <div className="selected-six-box">
-          {Array.from({ length: 2 }).map((_, rowIndex) => (
-            <div key={rowIndex} className="image-row">
-              {[0, 1,2].map((colIndex) => {
-                const selectedProduct =
-                  state.selectedProducts[rowIndex * 3 + colIndex];
-                return (
-                  <img
-                    key={colIndex}
-                    src={selectedProduct?.product_package || transparent}
-                    className="selected-product-image"
-                    alt={`selected product ${rowIndex * 3 + colIndex}`}
-                    onClick={() => handleProductRemove(selectedProduct)}
-                  />
-                );
-              })}
-            </div>
-          ))}
-        </div>
-      </div>
-
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <p className="text-center">*點選商品添加至格子中</p>
+          <div className="selected-six-box mx-auto">
+            {Array.from({ length: 2 }).map((_, rowIndex) => (
+              <div key={rowIndex} className="image-row">
+                {[0, 1, 2].map((colIndex) => {
+                  const selectedProduct =
+                    state.selectedProducts6[rowIndex * 3 + colIndex];
+                  return (
+                    <img
+                      key={colIndex}
+                      src={selectedProduct?.product_package || transparent}
+                      className="selected-product-image"
+                      alt={`selected product ${rowIndex * 3 + colIndex}`}
+                      onClick={() => handleProductRemove(selectedProduct)}
+                    />
+                  );
+                })}
+              </div>
+            ))}
+          </div>
+        </Col>
+      </Row>
+      {/* 要加Row、Col嗎  | 改Button */}
+      {/* <Row> */}
+      {/* <Col></Col> */}
       <div className="category-buttons m-3 text-center">
         <button
           className={
-            selectedCategory === '全部'
-              ? 'btn-color me-2'
-              : 'btn-cat-color me-2'
+            selectedCategory === 'all' ? 'btn-color me-2' : 'btn-cat-color me-2'
           }
           onClick={() => handleCategoryChange('all')}
         >
@@ -214,6 +211,7 @@ export default function SelectContentSix() {
           水饅頭
         </button>
       </div>
+      {/* </Row> */}
       <Row>
         {products
           .filter((product) =>
@@ -234,6 +232,6 @@ export default function SelectContentSix() {
             </Col>
           ))}
       </Row>
-    </div>
+    </Container>
   );
 }
