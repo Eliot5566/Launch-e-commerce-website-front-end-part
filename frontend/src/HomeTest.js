@@ -3,7 +3,6 @@ import Page from './page';
 import Page2 from './page2';
 import Page3 from './page3';
 import Page4 from './page4';
-import './nav.css';
 import './start.css';
 import './App.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
