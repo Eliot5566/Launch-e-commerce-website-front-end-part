@@ -1,41 +1,39 @@
-//四格禮盒專用
-import React, { useContext, useEffect } from 'react';
+// 第四步 四格禮盒 確認內容
+import React, { useContext, useEffect, useState } from 'react';
 import { Store } from '../Store';
 import { useNavigate } from 'react-router-dom';
-
-function ProgressBar() {
-  // const { data } = useContext(ProgressContext);
-  // const [CurrentStep, setCurrentStep] = useState(1);
-  return (
-    <>
-      <div className="container">
-        <ul className="progress bg-body fs-5" style={{ padding: '5rem' }}>
-          <li className="done">選擇規格</li>
-          <li className="done">選擇商品</li>
-          <li className="done">貼心小卡</li>
-          <li className="active">確認內容</li>
-        </ul>
-      </div>
-    </>
-  );
-}
+import axios from 'axios';
+import MyProgress from '../components/MyProgress';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 
 export default function GiftBoxDetails() {
   const navigate = useNavigate();
   const { state, dispatch } = useContext(Store);
+  const [currentStep, setCurrentStep] = useState(3);
 
   const {
+    userInfo,
     selectedProducts,
     selectedCard,
     cardContent,
-    _id,
     cart: { cartItems },
     giftBox, // 添加禮盒訊息
     giftBoxQuantity, // 添加禮盒數量
   } = state;
 
-  // 加载本地存储的禮盒信息
-  
+  const productMap = selectedProducts.reduce((map, product) => {
+    // productMap 是一個對象，用來存儲產品的數量 { 產品_id: 產品數量 }
+    const { _id, name } = product;
+    if (!map[_id]) {
+      map[_id] = { ...product, count: 0 };
+    }
+    map[_id].count += 1;
+    return map;
+  }, {});
+  //將產品 map 轉換為產品列表
+  const productList = Object.values(productMap);
+
+  // 在組件加載時從本地存儲中加載之前存放的禮盒資料
   useEffect(() => {
     const storedGiftBox = localStorage.getItem('giftBox');
     const storedGiftBoxQuantity = localStorage.getItem('giftBoxQuantity');
@@ -48,7 +46,7 @@ export default function GiftBoxDetails() {
     }
 
     if (storedGiftBoxQuantity) {
-      // 如果之前存放的禮盒數量存在，則加载到state中
+      // 如果之前存放的禮盒數量存在，則加載到state中
       dispatch({
         type: 'UPDATE_GIFT_BOX_QUANTITY',
         payload: parseInt(storedGiftBoxQuantity),
@@ -63,16 +61,17 @@ export default function GiftBoxDetails() {
         _id: 20,
         name: '4格禮盒',
         image: '/images/four_gift.png',
-        price: 200,
+        price: 480,
         quantity: 1,
+        giftBoxType: '4', // 添加giftBoxType
         isGiftBox: true, //標記是禮盒產品
       };
     } else if (giftBoxId === 21) {
       giftBox = {
         _id: 21,
         name: '6格禮盒',
-        image: '路径/到/6格禮盒图片',
-        price: 300,
+        image: '路徑/到/6格禮盒圖片',
+        price: 680,
         quantity: 1,
         isGiftBox: true,
       };
@@ -80,8 +79,8 @@ export default function GiftBoxDetails() {
       giftBox = {
         _id: 22,
         name: '9格禮盒',
-        image: '路径/到/9格禮盒图片',
-        price: 400,
+        image: '路徑/到/9格禮盒圖片',
+        price: 980,
         quantity: 1,
         isGiftBox: true,
       };
@@ -94,7 +93,7 @@ export default function GiftBoxDetails() {
     localStorage.setItem('giftBox', JSON.stringify(giftBox));
     localStorage.setItem('giftBoxQuantity', giftBoxQuantity.toString());
 
-    // 添加禮盒到購物車，並传递 _id
+    // 添加禮盒到購物車，並傳遞 _id
     dispatch({ type: 'CART_ADD_ITEM', payload: giftBox });
 
     // 更新購物車中的禮盒信息
@@ -123,56 +122,138 @@ export default function GiftBoxDetails() {
       type: 'UPDATE_CART_COUNT',
       payload: updatedCartCount,
     });
-    //新增提示訊息 加入購物車成功
-    
-    alert('加入購物車成功!');
+    alert('成功加入購物車!');
     navigate('/cart');
   };
 
+  const handleSubmit = async (e) => {
+    // e.preventDefault();
+
+    try {
+      //取得登入的使用者的 資料庫_id
+      const userId = userInfo._id;
+      // console.log('userId', userId);
+      const cardType = selectedCard;
+      // console.log('cardType', cardType);
+      // console.log('cardContent', cardContent);
+      // const selectedProduct = state.selectedProducts;
+      const selectedProduct = JSON.stringify(state.selectedProducts);
+      const response = await axios.post('/save-card-info', {
+        userId,
+        cardType,
+        cardContent,
+        selectedProduct,
+      });
+
+      if (response.status === 200) {
+        navigate('/cart');
+      } else {
+        alert('卡片資訊儲存失敗');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('卡片資訊儲存失敗');
+    }
+  };
   return (
-    <div>
-      <ProgressBar />
-      <h3>已選擇的商品</h3>
-      <div className="selected-four-box ">
-        {/* 渲染选定的产品信息 */}
-        {selectedProducts.map((selectedProduct) => (
-          <img
-            key={selectedProduct._id}
-            src={selectedProduct.product_package}
-            className="selected-product-image"
-            alt={`selected product ${selectedProduct._id}`}
-          />
-        ))}
-      </div>
+    <Container>
+      <Row>
+        <Col md={12}>
+          <MyProgress currentStep={currentStep} />
+        </Col>
+      </Row>
 
-      <hr />
-
-      <div className=" ">
-        {/* 渲染选定的产品信息 */}
-        {selectedProducts.map((selectedProduct) => (
-          <div key={selectedProduct._id} className="product-details">
+      <h3 className="fs-2 fw-bolder text-center mb-5 mt-3">確認禮盒內容</h3>
+      {
+        <div className="selected-four-box mx-auto">
+          {/* 渲染選定的商品信息 */}
+          {selectedProducts.map((selectedProduct, index) => (
             <img
+              // key={index}
+              // key={selectedProduct._id}
+              key={`${selectedProduct._id}-${index}`} // 使用组合的 key
               src={selectedProduct.product_package}
               className="selected-product-image"
               alt={`selected product ${selectedProduct._id}`}
             />
-            <h4>{selectedProduct.name}</h4>
-            <p>描述：{selectedProduct.description}</p>
+          ))}
+        </div>
+      }
+      <div className="text-center mt-5">
+        <div
+          className="text-center mt-5 fs-4 fw-bolder"
+          style={{ color: '#9A2540' }}
+        >
+          四格小資組合&nbsp;&nbsp;NT$480
+        </div>
+        <div
+          className="mx-auto mt-1 mb-3"
+          style={{ width: '40%', border: '0.01rem dashed #9A2540' }}
+        ></div>
+        {/* 渲染選定的商品信息 */}
+        {productList.map((selectedProduct, index) => (
+          <div
+            // key={selectedProduct._id}
+            key={`${selectedProduct._id}-${index}`} // 使用组合的 key
+            className="product-details d-flex justify-content-center"
+          >
+            <div
+              className="d-flex align-items-center"
+              style={{ width: '30%', border: '0.05rem solid #fcdde2' }}
+            >
+              <img
+                src={selectedProduct.product_package}
+                className="selected-product-image m-1"
+                style={{ width: '5rem', height: '5rem' }}
+                alt={`selected product ${selectedProduct._id}`}
+              />
+              <div className="fs-5 m-3">{selectedProduct.name}</div>
+              <div
+                className="fs-5 pe-3"
+                style={{ marginLeft: 'auto', color: '#9A2540' }}
+              >
+                x{selectedProduct.count}
+              </div>
+            </div>
           </div>
         ))}
       </div>
 
+      <br />
       <hr />
       <div>
-        {/* 显示用户选择的卡片样式和内容 */}
-        <h3>選擇的卡片樣式</h3>
+        {/* 顯示用戶選擇的卡片樣式與內容 */}
+        <div
+          className="text-center mt-5 fs-4 fw-bolder"
+          style={{ color: '#9A2540' }}
+        >
+          選擇的卡片樣式
+        </div>
         <p>{selectedCard}</p>
 
-        <h3>卡片內容</h3>
+        <div
+          className="text-center mt-5 fs-4 fw-bolder"
+          style={{ color: '#9A2540' }}
+        >
+          卡片內容
+        </div>
         <p>{cardContent}</p>
       </div>
 
-      <button onClick={() => addToCart(20)}>將禮盒添加到購物車</button>
-    </div>
+      {/* 添加禮盒到購物車的按鈕 */}
+      <div className="d-flex justify-content-end">
+        <Button
+          variant="color"
+          style={{ backgroundColor: '#9a2540', color: 'white' }}
+          className="btn-color"
+          onClick={() => {
+            // handleSubmit(); // 调用 handleSubmit 函数
+            addToCart(20); // 调用 addToCart 函数
+          }}
+        >
+          加到購物車
+        </Button>
+      </div>
+    </Container>
   );
 }

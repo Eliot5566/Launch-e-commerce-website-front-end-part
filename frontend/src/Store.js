@@ -3,15 +3,16 @@ export const Store = createContext();
 
 // initialsSte是一個物件，裡面有userInfo和cart兩個屬性
 const initialState = {
-  selectedBoxSize: null, // 用户选择的盒子大小
-  giftBoxPrice: 0, // 禮盒的价格
-  giftBoxQuantity: 0, // 禮盒的數量
-  selectedProducts: [], // 用户选择的产品
-  selectedCard: '', // 用户选择的卡片
-  cardContent: '', // 卡片內容
-  isConfirmed: false, // 是否已确认卡片內容
-  // giftBox: [], // 添加空的 giftBox 属性
+  selectedBoxSize: null, // 用來記錄用戶選擇的禮盒尺寸
+  giftBoxPrice: 0, // 禮盒的價格
+  selectedProducts: [], 
+  selectedProducts6: [], 
+  selectedProducts9: [], 
+  selectedCard: '', // 用戶選擇的卡片
+  cardContent: '', // 卡片內容 
   // userInfo是一個物件，裡面有name、email、isAdmin、token四個屬性
+  //來自哪裡 ? 來自於SignScreen.js的ctxDispatch({ type: 'USER_SIGNIN', payload: data });
+  //data 是一個物件，裡面有name、email、isAdmin、token四個屬性
   userInfo: localStorage.getItem('userInfo')
     ? JSON.parse(localStorage.getItem('userInfo'))
     : null,
@@ -33,33 +34,14 @@ const initialState = {
     itemSum: 0,
     itemsPrice: 0,
 
-    // itemsPrice: cartItems.reduce((a, c) => a + c.price * c.qty, 0),
-    // shippingPrice: itemsPrice > 100 ? 0 : 10,
-
-   
-    // totalPrice: itemsPrice + shippingPrice + giftBoxPrice,
-    // totalPrice: itemsPrice,
-    // shippingAddress: localStorage.getItem('shippingAddress')
-    //   ? JSON.parse(localStorage.getItem('shippingAddress'))
-    //   : {},
-    // paymentMethod: localStorage.getItem('paymentMethod')
-    //   ? localStorage.getItem('paymentMethod')
-    //   : '',
-    // cartItems: localStorage.getItem('cartItems')
-    //   ? JSON.parse(localStorage.getItem('cartItems'))
-    //   : [],
-
-    // 請正確設置itemsPrice 確保加入訂單 不會出現NaN
-
-    
-    giftBox: {
-      name: 'Custom Gift Box',
-      image: '',
-      price: 0,
-      quantity: 0,
-      _id:20,
+    // giftBox: {
+    //   name: 'Custom Gift Box',
+    //   image: '',
+    //   price: 0,
+    //   quantity: 0,
+    //   _id:20,
       
-    }, // 添加空的 giftBox 属性
+    // }, // 添加空的 giftBox 属性
   },
 };
 // reducer是一個函式，裡面有兩個參數，state和action
@@ -93,20 +75,10 @@ function reducer(state, action) {
 
     case 'USER_SIGNIN':
       return { ...state, userInfo: action.payload };
-    // case 'USER_SIGNIN':
-    //   // 将用户信息和令牌添加到 userInfo 对象中
-    //   const { name, email, isAdmin, token } = action.payload;
-    //   const userInfo = {
-    //     name,
-    //     email,
-    //     isAdmin,
-    //     token,
-    //   };
 
-    //   // 将 userInfo 存储到本地存储
-    //   localStorage.setItem('userInfo', JSON.stringify(userInfo));
+    case 'USER_ID':
+      return { ...state, userInfo: action.payload  };
 
-    // return { ...state, userInfo };
     case 'USER_SIGNOUT':
       return {
         ...state,
@@ -126,13 +98,38 @@ function reducer(state, action) {
         ...state,
         selectedProducts: [...state.selectedProducts, action.payload],
       };
-    case 'REMOVE_SELECTED_PRODUCT':
+      case 'REMOVE_SELECTED_PRODUCT':
+        return {
+          ...state,
+          selectedProducts: state.selectedProducts.filter(
+            (product) => product !== action.payload
+          ),
+        };
+    case 'ADD_SELECTED_PRODUCT6':
       return {
         ...state,
-        selectedProducts: state.selectedProducts.filter(
-          (product) => product._id !== action.payload._id
-        ),
+        selectedProducts6: [...state.selectedProducts6, action.payload],
       };
+      case 'REMOVE_SELECTED_PRODUCT6':
+        return {
+          ...state,
+          selectedProducts6: state.selectedProducts6.filter(
+            (product) => product !== action.payload
+          ),
+        };
+    case 'ADD_SELECTED_PRODUCT9':
+      return {
+        ...state,
+        selectedProducts9: [...state.selectedProducts9, action.payload],
+      };
+      case 'REMOVE_SELECTED_PRODUCT9':
+        return {
+          ...state,
+          selectedProducts9: state.selectedProducts9.filter(
+            (product) => product !== action.payload
+          ),
+        };
+
     case 'SAVE_PAYMENT_METHOD':
       return {
         ...state,
