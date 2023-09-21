@@ -79,7 +79,14 @@
   /* background-image: url("./images/背景.png"); */
   /* background: linear-gradient(to bottom, lightpink 0%,rgba(83,203,241,1) 40%,rgba(166,208,228,1) 100%); */
   /* background: linear-gradient(to bottom, rgb(228, 178, 186) 0%,#ffe1e6 100%); */
-  background: linear-gradient(to bottom, #feb7c9 0%, #ffeaed 100%);
+  /* background: linear-gradient(to bottom, #feb7c9 0%, #ffeaed 100%); */
+  background: linear-gradient(
+    to bottom,
+    /* #b6d8ff 0%, */ #feb7c9 0%,
+    #ff8b6a 65%,
+    #ff8b6a 75%,
+    #feb7c9 100%
+  );
 }
 
 #Mountain {
@@ -126,4 +133,8 @@
 /* 隐藏页脚 */
 .hide-navbar-footer .footer {
   display: none;
+}
+
+.linepay {
+  width: 100px;
 }

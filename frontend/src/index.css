@@ -12,7 +12,8 @@ body {
   margin: 1rem;
 }
 header {
-  background-color: #9a2540;
+  /* background-color: #9a2540; */
+  background-color: #c97689;
   color: #fff;
   padding: 1rem;
 }
@@ -325,69 +326,46 @@ a.nav-link:hover {
 /* 進度條-end */
 
 /* 上、下一步按鈕-start */
-/* .btn-color {
+Button.btn-color {
   background-color: #9a2540;
   color: white;
-  border-radius: 5px;
+  border-radius: 7px;
   padding: 10px 12px;
   font-size: 16px;
   border: none;
-  text-decoration: none;
-} */
-/* .btn-color:hover{
-  background-color: #941d39;
-  color: white;
-  border-radius: 5px;
-  padding: 10px 12px;
-  font-size: 16px;
-  border: none;
-  text-decoration: none;
-} */
-
-.btn-color:hover {
-  background-color: #5b1e2c !important;
+  /* text-decoration: none; */
 }
 
-/* .next-button .btn-color {
-  background-color: #9a2540;
-  color: white;
-  border-radius: 5px;
-  padding: 10px 12px;
-  font-size: 16px;
-  border: none;
-  text-decoration: none;
+Button.btn-color:hover {
+  background-color: #e08685;
 }
-
-.next-button .btn-color:hover {
-  background-color: #941d39;
-  color: white;
-  border-radius: 5px;
-  padding: 10px 12px;
-  font-size: 16px;
-  border: none;
-  text-decoration: none;
-} */
+Button.btn-color:active {
+  background-color: #e08685;
+}
+Button.btn-color:active {
+  color: #9a2540;
+}
 /* 上、下一步按鈕-end */
 
 /* 類別-被點選-start */
 .category-buttons .btn-color {
   background-color: #9a2540;
   color: white;
-  /* border-radius: 5px;
+  border-radius: 5px;
   padding: 10px 12px;
   margin-bottom: 10px;
   font-size: 16px;
-  border: none; */
+  border: none;
 }
 
 .category-buttons .btn-color:hover {
-  background-color: #5b1e2c;
+  background-color: #e08685; /* ??? */
   color: white;
-  /* border-radius: 5px;
+  border-radius: 5px;
   padding: 10px 12px;
   margin-bottom: 10px;
   font-size: 16px;
-  border: none; */
+  border: none;
 }
 
 /* 類別-被點選-end */
@@ -396,21 +374,21 @@ a.nav-link:hover {
 .btn-cat-color {
   background-color: #fcdde2;
   color: #9a2540;
-  /* border-radius: 5px;
+  border-radius: 5px;
   padding: 10px 12px;
   margin-bottom: 10px;
   font-size: 16px;
-  border: none; */
+  border: none;
 }
 
 .btn-cat-color:hover {
   background-color: #9a2540;
   color: white;
-  /* border-radius: 5px;
+  border-radius: 5px;
   padding: 10px 12px;
   margin-bottom: 10px;
   font-size: 16px;
-  border: none; */
+  border: none;
 }
 
 /* 類別-未被點選-end */
@@ -470,9 +448,12 @@ a.nav-link:hover {
   position: absolute;
   top: 10px; /* 文字距離圖片頂部的距離 */
   left: 10px; /* 文字距離圖片左側的距離 */
-  background-color: rgba(255, 255, 255, 0.7); /* 文字背景色 */
+  background-color: rgba(255, 255, 255, 0.384); /* 文字背景色 */
   padding: 5px; /* 文字的內邊距 */
   white-space: pre-wrap; /* 保留換行符號，還會保留空格 */
+  width: 310px;
+  height: 230px;
+  font-size: 20px;
 }
 /* 卡片-end */
 /* 客製禮盒樣式-end */
@@ -481,12 +462,31 @@ a.nav-link:hover {
 .ui-accordion .ui-accordion-header {
   background: linear-gradient(
     240deg,
-    rgba(252, 221, 226, 1) 0%,
-    rgba(154, 37, 64, 0.8295693277310925) 100%
+    white 0%,
+    rgba(252, 221, 226, 1) 20%,
+    #e08685 100%
   );
-  border: #9a2540;
+  border: #e08685;
   font-weight: bolder;
-  line-height: 3rem;
+  line-height: 2rem;
+  border-radius: 10px; /* 多加圓角 */
+}
+.ui-accordion .ui-accordion-header:not(.ui-state-active):hover {
+  color: white;
+}
+.ui-accordion .ui-accordion-header:not(.ui-state-active) {
+  color: #9a2540;
+}
+.ui-accordion .ui-accordion-content {
+  height: 100px;
+  overflow: auto;
+  background-color: #fcdde2;
+  /* border: 1px solid #e08685; */
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 1.5rem;
+  color: #9a2540;
+  margin: 10px 0;
 }
 /* FAQ常見問題-end */
 
@@ -526,3 +526,25 @@ a.nav-link:hover {
   padding: 1.5rem;
 }
 /* sub-訂閱我們-end */
+
+/* //整體// */
+.colfooter {
+  /* background-color: #e08685; */
+  /* background-image: url(./images/359393_m.jpg); */
+  /* background-repeat: no-repeat; */
+  /* object-fit: contain; */
+  /* background-size: contain; */
+}
+
+.cartstyle {
+  margin-bottom: 45vh;
+}
+
+.giftmarin {
+  margin-bottom: 16vh;
+}
+
+.outlet {
+  position: relative;
+  height: 1000px;
+}

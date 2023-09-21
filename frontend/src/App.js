@@ -47,6 +47,7 @@ import ProfileScreen from './screens/ProfileScreen';
 import HomeTest from './HomeTest';
 import Layout from './layout/Layout';
 import Footer from './screens/Footer';
+import SignTest from './screens/SignTest';
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -84,8 +85,9 @@ function App() {
                 <Route path="/category" element={<CategoryPage />} />
                 <Route path="/product/:_id" element={<Product />} />
                 <Route path="/cart" element={<CartScreen />} />
-                <Route path="/signin" element={<SigninScreen />} />
-                <Route path="/signup" element={<SignupScreen />} />
+                {/* <Route path="/signin" element={<SigninScreen />} />
+                <Route path="/signup" element={<SignupScreen />} /> */}
+                <Route path="/signin" element={<SignTest />} />
                 <Route path="/placeorder" element={<PlaceOrder />} />
                 <Route path="/order/:id" element={<OrderScreen />} />
 
