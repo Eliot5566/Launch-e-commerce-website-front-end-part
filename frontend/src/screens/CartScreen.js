@@ -10,6 +10,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './rabbit.css';
 import { Container } from 'react-bootstrap';
+import swal from 'sweetalert';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+const MySwal = withReactContent(Swal);
 
 export default function CartScreen() {
   const [selectedGiftBoxType, setSelectedGiftBoxType] = useState('4');
@@ -80,9 +84,59 @@ export default function CartScreen() {
   };
 
   const removeItemHandler = (item) => {
-    ctxDispatch({ type: 'CART_REMOVE_ITEM', payload: item });
+    MySwal.fire({
+      title: <strong>確定要清空此商品?</strong>,
+      icon: 'warning',
+      iconColor: '#e4849a',
+      showCancelButton: true,
+      confirmButtonColor: '#9a2540',
+      confirmButtonText: '確定',
+      cancelButtonText: '取消',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        ctxDispatch({ type: 'CART_REMOVE_ITEM', payload: item });
+      }
+    });
+  };
+  const MaxHandler = (item) => {
+    if (item.quantity >= 20) {
+      MySwal.fire({
+        title: <strong>訂購商品上限為20個</strong>,
+        html: <p>感謝您的支持~</p>,
+        icon: 'warning',
+        iconColor: '#e4849a',
+        confirmButtonColor: '#9a2540',
+        confirmButtonText: '我知道了',
+      });
+      return true; // 表示已達到最大限制
+    }
+    return false; // 表示未達到最大限制
   };
 
+
+  const plus = (item) => {
+    if (!MaxHandler(item)) {
+      setInput(parseInt(input) + 1);
+      updateCartHandler(item, item.quantity + 1);
+    }
+    if (item.quantity === 0) {
+      MySwal.fire({
+        title: <strong>庫存已售罄</strong>,
+        html: <p>感謝您的支持~</p>,
+        icon: 'warning',
+        iconColor: '#e4849a',
+        confirmButtonColor: '#9a2540',
+        confirmButtonText: '我知道了',
+      });
+    }
+  };
+
+  const minus = (item) => {
+    if (item.quantity > min) {
+      setInput(parseInt(input) - 1);
+      updateCartHandler(item, item.quantity - 1);
+    }
+  };
   const checkoutHandler = () => {
     navigate('/signin?redirect=/shipping');
   };
@@ -109,15 +163,30 @@ export default function CartScreen() {
       if (response.status === 200) {
         // navigate('/cart');
       } else {
-        alert('請先登入會員');
+        swal({
+          title: '請先登入會員',
+          text: '請先登入會員',
+          icon: 'warning',
+          button: '確定',
+        });
+        // alert('請先登入會員');
       }
     } catch (error) {
       console.error('Error:', error);
-      alert('請先登入會員');
+      swal({
+        title: '請先登入會員',
+        text: '請先登入會員',
+        icon: 'warning',
+        button: '確定',
+      });
+      // alert('請先登入會員');
     }
   };
+  const [input, setInput] = useState('1');
+  const min = 1;
+  const max = 20;
   return (
-    <div>
+    <div className="cartstyle">
       <Container>
         <Helmet>
           <title>購物車內容</title>
@@ -168,9 +237,7 @@ export default function CartScreen() {
                       </Col>
                       <Col md={2}>
                         <Button
-                          onClick={() =>
-                            updateCartHandler(item, item.quantity - 1)
-                          }
+                          onClick={() => minus(item)}
                           className="btn fw-bolder rounded-circle fs-5 p-0 border-0"
                           style={{
                             width: '2rem',
@@ -184,9 +251,7 @@ export default function CartScreen() {
                         </Button>
                         <span className="p-2">{item.quantity}</span>
                         <Button
-                          onClick={() =>
-                            updateCartHandler(item, item.quantity + 1)
-                          }
+                          onClick={() => plus(item)}
                           className="btn fw-bolder rounded-circle fs-5 p-0 border-0"
                           style={{
                             width: '2rem',
@@ -276,7 +341,6 @@ export default function CartScreen() {
                       <Button
                         style={{ backgroundColor: '#9a2540' }}
                         className="text-white border-0 fs-4"
-                        // onClick={checkoutHandler}
                         onClick={() => {
                           checkoutHandler();
                           handleSubmit(); // 调用 handleSubmit 函数
