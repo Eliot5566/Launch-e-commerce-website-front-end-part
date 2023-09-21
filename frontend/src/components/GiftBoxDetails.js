@@ -5,6 +5,13 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import MyProgress from '../components/MyProgress';
 import { Container, Row, Col, Button } from 'react-bootstrap';
+import swal from 'sweetalert';
+import greenCardFront from '../images/card/green_card_front.png';
+import offWhiteColorFront from '../images/card/offwhite_card_front.png';
+import pinkCardFront from '../images/card/pink_card_front.png';
+import greenCardBack from '../images/card/green_card_back.jpg';
+import offWhiteColorBack from '../images/card/offwhite_card_back.jpg';
+import pinkCardBack from '../images/card/pink_card_back.jpg';
 
 export default function GiftBoxDetails() {
   const navigate = useNavigate();
@@ -122,7 +129,11 @@ export default function GiftBoxDetails() {
       type: 'UPDATE_CART_COUNT',
       payload: updatedCartCount,
     });
-    alert('成功加入購物車!');
+    swal({
+      title: '成功加入購物車!',
+      icon: 'success',
+      button: '確認',
+    });
     navigate('/cart');
   };
 
@@ -148,11 +159,19 @@ export default function GiftBoxDetails() {
       if (response.status === 200) {
         navigate('/cart');
       } else {
-        alert('卡片資訊儲存失敗');
+        swal({
+          title: '卡片資訊儲存失敗',
+          icon: 'error',
+          button: '確認',
+        });
       }
     } catch (error) {
       console.error('Error:', error);
-      alert('卡片資訊儲存失敗');
+      swal({
+        title: '卡片資訊儲存失敗',
+        icon: 'error',
+        button: '確認',
+      });
     }
   };
   return (
@@ -229,15 +248,44 @@ export default function GiftBoxDetails() {
         >
           選擇的卡片樣式
         </div>
-        <p>{selectedCard}</p>
+        {/* <p>{selectedCard}</p> */}
+<div className=' d-flex justify-content-center'>
+        <Col md={6} className='d-flex justify-content-center'> 
 
-        <div
-          className="text-center mt-5 fs-4 fw-bolder"
-          style={{ color: '#9A2540' }}
-        >
-          卡片內容
-        </div>
-        <p>{cardContent}</p>
+            <div className="card-back-img mb-3">
+              {/* 所選卡片對應的圖片 */}
+            {selectedCard === '綠色' ? (
+              <img
+
+                src={greenCardBack}
+                alt={selectedCard}
+                width={334}
+                height={250}
+              />
+            ) : selectedCard === '米白' ? (
+              <img
+
+                src={offWhiteColorBack}
+                alt={selectedCard}
+                width={334}
+                height={250}
+              />
+            ) : selectedCard === '粉色' ? (
+              <img
+                src={pinkCardBack}
+                alt={selectedCard}
+                width={334}
+                height={250}
+              />
+            ) : null}
+              <p
+                className="card-back-text"
+                dangerouslySetInnerHTML={{ __html: cardContent }}
+              ></p>
+            </div>
+           {/* 顯示用戶選擇的卡片樣式與內容 */}
+          </Col>
+          </div>
       </div>
 
       {/* 添加禮盒到購物車的按鈕 */}
