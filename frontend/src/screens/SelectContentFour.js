@@ -8,6 +8,7 @@ import transparent from '../images/transparent.png';
 import { Store } from '../Store';
 import MyProgress from '../components/MyProgress';
 import 'animate.css';
+import swal from 'sweetalert';
 
 export default function SelectContentFour() {
   const { state, dispatch } = useContext(Store);
@@ -39,7 +40,11 @@ export default function SelectContentFour() {
   const handleProductSelect = (product) => {
     if (state.selectedProducts.length >= 4) {
       // 已選擇的產品數量達到4個，顯示錯誤提示
-      alert('數量已達到上限！');
+      swal({
+        title: '數量已達上限！',
+        icon: 'warning',
+        button: '確定',
+      });
       return;
     }
 
@@ -62,9 +67,21 @@ export default function SelectContentFour() {
     setSelectedCategory(category);
   };
 
-  const handleNextButtonClick = () => {
-    const userResponse = window.confirm('是否需要加入禮盒卡片？');
+  const handleNextButtonClick = async () => {
+    // const userResponse = window.confirm('是否需要加入禮盒卡片？');
+    // const userResponse = swal({
+    //   title: "是否需要加入禮盒卡片？",
+    //   icon: "warning",
+    //   // buttons: true,
+    //   dangerMode: true,
+    // });
 
+    const userResponse = await swal({
+      title: '是否需要加入禮盒卡片？',
+      icon: 'warning',
+      buttons: ['不需要', '需要'],
+      dangerMode: true,
+    });
     if (userResponse) {
       navigate(`/giftcard`);
     } else {

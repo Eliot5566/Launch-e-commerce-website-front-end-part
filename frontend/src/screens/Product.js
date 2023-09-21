@@ -4,6 +4,10 @@ import axios from 'axios';
 import React, { useEffect, useState, useContext } from 'react';
 import { Store } from '../Store';
 import { Helmet } from 'react-helmet-async';
+import swal from 'sweetalert';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+const MySwal = withReactContent(Swal);
 
 function Product(props) {
   const { product } = props;
@@ -16,7 +20,12 @@ function Product(props) {
   const addToCartHandler = async (item) => {
     const quantity = parseInt(input); // 从input中获取商品数量
     if (isNaN(quantity) || quantity < 1) {
-      window.alert('請輸入有效的數量');
+      swal({
+        title: '請輸入有效的數量',
+        text: '請重新輸入數量',
+        icon: 'error',
+        button: '確定',
+      });
       return;
     }
 
@@ -26,18 +35,39 @@ function Product(props) {
     if (existItem) {
       const totalQuantity = existItem.quantity + quantity;
       if (totalQuantity > productInStock) {
-        window.alert('抱歉,庫存不足');
+        MySwal.fire({
+          title: <strong>購物車數量已大於庫存量</strong>,
+          html: <p>請選購其他商品~</p>,
+          icon: 'error',
+          iconColor: '#e4849a',
+          confirmButtonColor: '#9a2540',
+          confirmButtonText: '我知道了',
+        });
       } else {
         ctxDispatch({
           type: 'CART_ADD_ITEM',
           payload: { ...item, quantity: totalQuantity },
         });
         // 提示成功加入購物車
-        window.alert('成功加入購物車!');
+        MySwal.fire({
+          title: <strong>成功加入購物車</strong>,
+          html: <p>謝謝選購，可以到購物車查看內容~</p>,
+          icon: 'success',
+          iconColor: '#e4849a',
+          confirmButtonColor: '#9a2540',
+          confirmButtonText: '我知道了',
+        });
       }
     } else {
       if (quantity > productInStock) {
-        window.alert('抱歉,庫存不足');
+        MySwal.fire({
+          title: <strong>很抱歉，目前沒有庫存</strong>,
+          html: <p>請選購其他商品~</p>,
+          icon: 'error',
+          iconColor: '#e4849a',
+          confirmButtonColor: '#9a2540',
+          confirmButtonText: '我知道了',
+        });
       } else {
         ctxDispatch({
           type: 'CART_ADD_ITEM',
