@@ -101,7 +101,7 @@ export default function OrderScreen() {
       try {
         dispatch({ type: 'PAY_REQUEST' });
         const { data } = await axios.put(
-          `https://last-hx4j.onrender.com//api/orders/${orderId}/pay`,
+          `https://last-hx4j.onrender.com/api/orders/${orderId}/pay`,
           details,
           {
             headers: { authorization: `Bearer ${userInfo.token}` },
@@ -131,7 +131,7 @@ export default function OrderScreen() {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
         //改
-        const { data } = await axios.get(`https://last-hx4j.onrender.com//api/orders/${orderId}`, {
+        const { data } = await axios.get(`https://last-hx4j.onrender.com/api/orders/${orderId}`, {
           headers: { authorization: `Bearer ${userInfo.token}` },
         });
         data.order_items = JSON.parse(data.order_items);
@@ -174,7 +174,7 @@ export default function OrderScreen() {
     } else {
       const loadPaypalScript = async () => {
         try {
-          const { data: clientId } = await axios.get('https://last-hx4j.onrender.com//api/keys/paypal', {
+          const { data: clientId } = await axios.get('https://last-hx4j.onrender.com/api/keys/paypal', {
             headers: { authorization: `Bearer ${userInfo.token}` },
           });
           console.log(
