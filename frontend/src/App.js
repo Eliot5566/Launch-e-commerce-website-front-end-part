@@ -40,14 +40,19 @@ import GiftCard9 from './screens/GiftCard9';
 import GiftBoxDetails from './components/GiftBoxDetails.js';
 import GiftBoxDetails6 from './components/GiftBoxDetails6.js';
 import GiftBoxDetails9 from './components/GiftBoxDetails9.js';
-import Sub from './screens/Sub';
 import FAQ from './screens/FAQ';
 import OrderHistory from './screens/OrderHistory';
 import ProfileScreen from './screens/ProfileScreen';
 import HomeTest from './HomeTest';
 import Layout from './layout/Layout';
-import Footer from './screens/Footer';
 import SignTest from './screens/SignTest';
+import Test2 from './screens/Test2';
+import ContactUs from './screens/ContactUs';
+import UserPage from './screens/UserPage';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import ForgotPassword from './screens/ForgotPassword';
+import ResetPassword from './screens/ResetPassword';
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -55,17 +60,14 @@ function App() {
   const [cartItemCount, setCartItemCount] = useState(0);
 
   useEffect(() => {
-    // 計算購物車數量
     const itemCount = cart.cartItems.reduce(
       (count, item) => count + (item.quantity || 0),
       0
     );
 
-    // 設定購物車數量
     setCartItemCount(itemCount);
   }, [cart, giftBoxQuantity]);
   const signoutHandler = () => {
-    //ctxDispatch是Store.js裡的dispatch function
     ctxDispatch({ type: 'USER_SIGNOUT' });
     localStorage.removeItem('userInfo');
 
@@ -78,16 +80,17 @@ function App() {
       <div className="d-flex flex-column site-container">
         <ToastContainer position="bottom-center" limit={1} />
         <main>
-          <div className="mt-3">
+          <div className="">
             <Routes>
               <Route path="/" element={<HomeTest />} />
               <Route path="/" element={<Layout />}>
                 <Route path="/category" element={<CategoryPage />} />
+                <Route
+                  path="/category/:categoryName"
+                  element={<CategoryPage />}
+                />
                 <Route path="/product/:_id" element={<Product />} />
                 <Route path="/cart" element={<CartScreen />} />
-                {/* <Route path="/signin" element={<SigninScreen />} />
-                <Route path="/signup" element={<SignupScreen />} /> */}
-                <Route path="/signin" element={<SignTest />} />
                 <Route path="/placeorder" element={<PlaceOrder />} />
                 <Route path="/order/:id" element={<OrderScreen />} />
 
@@ -98,13 +101,21 @@ function App() {
                 <Route path="/giftcard6" element={<GiftCard6 />} />
                 <Route path="/giftcard9" element={<GiftCard9 />} />
                 <Route path="/faq" element={<FAQ />} />
-                {/* <Route path="/sub" element={<Sub />} /> */}
 
                 <Route path="/cardboxdetail" element={<GiftBoxDetails />} />
                 <Route path="/cardboxdetail6" element={<GiftBoxDetails6 />} />
                 <Route path="/cardboxdetail9" element={<GiftBoxDetails9 />} />
                 <Route path="/orderhistory" element={<OrderHistory />} />
                 <Route path="/profile" element={<ProfileScreen />} />
+                <Route path="/userpage" element={<UserPage />} />
+                <Route path="/signin" element={<SignTest />} />
+                <Route path="/forgotpassword" element={<ForgotPassword />} />
+
+                <Route
+                  path="/resetpassword/:resetToken"
+                  element={<ResetPassword />}
+                />
+                <Route path="/contact" element={<ContactUs />} />
 
                 <Route path="/test" element={<HomeScreen />} />
                 <Route
@@ -119,15 +130,12 @@ function App() {
                   path="/select-content/nine"
                   element={<SelectContentNine />}
                 />
+                <Route path="/test2" element={<Test2 />} />
               </Route>
             </Routes>
           </div>
         </main>
-        <>
-          {/* <Sub /> */}
-          {/* <Footer /> */}
-          {/* <div className="text-center">All rights reserved</div> */}
-        </>
+        <></>
       </div>
     </BrowserRouter>
   );

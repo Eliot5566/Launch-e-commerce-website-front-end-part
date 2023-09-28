@@ -59,5 +59,8 @@ function Product(props) {
     </Card>
   );
 }
+const { data } = await axios.get(
+  `https://last-hx4j.onrender.com/products/${item._id}`
+);
 
 export default Product;

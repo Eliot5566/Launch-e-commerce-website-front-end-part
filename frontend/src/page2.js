@@ -1,44 +1,68 @@
-import './page.css';
-import main1 from './images/最新消息1.jpg';
-import main2 from './images/最新消息2.jpg';
-import main3 from './images/最新消息3.jpg';
-
-//
-import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-
+import React from 'react';
+import './Try.css';
+import a from './images/最新消息1.png';
+import b from './images/最新消息2.png';
+import c from './images/最新消息3.png';
 function page2() {
   return (
-    <div className="background2 border border-dark h-100">
-      <div className="text-center  m-3">
-        <h1 className="fw-bold">最新消息</h1>
-      </div>
-      <div className="pagesContainer border border-dark background2  d-flex  align-items-center">
-        <div className="row m-5 ">
-          <div className="col-md-4 ">
-            <img
-              className="h-100 w-100 border border-5 rounded-3"
-              src={main1}
-              alt=""
-            />
+    <div className='background3'>
+      <div className="container bg-light bg-opacity-75 ">
+        {/* <header className="hero os">
+      <hgroup>
+        <h2 className="textTry vintage">VINTAGE</h2>
+        <h2 className="textTry illustration">ILLUSTRATION</h2>
+        <h2 className="textTry nature">NATURE</h2>
+        <div className="flowerTry" />
+        <div className="frame" />
+      </hgroup>
+    </header> */}
+        <section className="os">
+          <div className="inner set-left align-items-center">
+            <br />
+            <div>
+              <h1 className="text-with-shadow fw-bold">最新活動</h1>
+            </div>
+            <br />
+            <div className="section-obj ">
+              <img className="border border-5 " src={a} />
+            </div>
+            <div className="section-content">
+              <h3>
+                即日起和菓子
+                滿百免運活動！
+              </h3>
+              <p>即日起，購買和菓子滿百免運活動！不要錯過這個絕佳的機會。獲得美味的和菓子，並享受免費送貨服務。快來品嘗各種美味！</p>
+             
+            </div>
           </div>
-          <div className="col-md-4 ">
-            <img
-              className="h-100 w-100 border border-5 rounded-3"
-              src={main2}
-              alt=""
-            />
+        </section>
+
+        <section className="os">
+          <div className="inner set-right">
+            <div className="section-obj">
+              <img className="border border-5" src={b} />
+            </div>
+            <div className="section-content">
+              <h3 className="">禮盒服務快來製作自己喜歡禮盒組合吧～</h3>
+                <p>打造獨一無二的禮盒，選擇您喜愛的組合！溫馨禮物，傳遞心意。立即選購吧！</p>
+            </div>
           </div>
-          <div className="col-md-4 ">
-            <img
-              className="h-100 w-100 border border-5 rounded-3"
-              src={main3}
-              alt=""
-            />
+        </section>
+        <section className="os">
+          <div className="inner set-left">
+            <div className="section-obj">
+              <img className="border border-5" src={c} />
+            </div>
+            <div className="section-content">
+              <h3 className="">最新門市開幕</h3>
+              <p>
+                我們的最新門市已經開幕啦！歡迎光臨，品味新鮮美味。期待與您相見！</p>
+            
+            </div>
           </div>
-          <div className="text-center fw-bold m-2">
-            <h3>查看更多</h3>
-          </div>
-        </div>
+
+        
+        </section>
       </div>
     </div>
   );

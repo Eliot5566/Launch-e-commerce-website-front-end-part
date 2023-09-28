@@ -3,9 +3,10 @@ import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
 import './product.css';
 import './GiftProducts.css';
-
+import swal from 'sweetalert';
 import axios from 'axios';
 import { Store } from '../Store';
+
 
 function GiftProducts(props) {
   const { product } = props;
@@ -22,7 +23,7 @@ function GiftProducts(props) {
       `https://last-hx4j.onrender.com/${item._id}`
     );
     if (data.countInStock < quantity) {
-      window.alert('Sorry. Product is out of stock');
+      swal('抱歉，庫存不足', '', 'error');
       return;
     }
     ctxDispatch({

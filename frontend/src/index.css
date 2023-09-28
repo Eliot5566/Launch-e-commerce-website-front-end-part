@@ -32,15 +32,6 @@ header a {
   /* scale: 1.2; */
   transition: all 0.5s ease-in-out;
 }
-#basic-nav-dropdown {
-  color: #000000;
-  font-weight: bold;
-  text-decoration: none;
-}
-
-.dropdown-menu a {
-  color: #000000;
-}
 
 /* ////////////// */
 main {
@@ -85,7 +76,9 @@ main {
 }
 
 .small-container {
+  margin-top: 15vh;
   max-width: 600px;
+  opacity: 0.8;
 }
 
 .checkout-steps > div {
@@ -158,7 +151,7 @@ main {
 }
 
 .nav-item {
-  color: #83818c;
+  color: #fcdde2;
   padding: 20px;
   text-decoration: none;
   transition: 0.3s;
@@ -241,27 +234,52 @@ main {
   opacity: 1;
   right: 0;
 }
+/* 立即選購按鈕-end */
+
+/* nav-link-start */
 a.nav-link {
   display: flex;
   justify-content: center;
   align-items: center;
-  /* color: #FEB7C9; */
-
+  color:#9a2540;
   transform: scale(1);
   transition: all 0.3s ease-in-out;
-  font-size: 1.5rem;
+  font-size: 1rem;
   margin-left: auto;
 }
 a.nav-link:hover {
   transform: scale(1.3);
-  transition: all 0.7s ease-in-out;
+  transition: all 0.5s ease-in-out;
 }
 .nav-link {
   margin: 0 1rem;
 }
+/* nav-link-end */
 
-/* 立即選購按鈕-end */
+/* 產品名稱-start */
+.card-body .card-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+}
 
+@media (max-width: 1200px) {
+  .card-body .card-title {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 1000px) {
+  .card-body .card-title {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .card-body .card-title {
+    font-size: 1.2rem;
+  }
+}
+/* 產品名稱-end */
 /* 客製禮盒樣式-start */
 
 /* 進度條-start */
@@ -298,8 +316,8 @@ a.nav-link:hover {
   content: '';
   position: absolute;
   width: 100%;
-  height: 1px;
-  background-color: #ddd;
+  height: 2px;
+  background-color: #595959;
   top: 15px;
   left: -50%;
   z-index: -1;
@@ -325,62 +343,28 @@ a.nav-link:hover {
 }
 /* 進度條-end */
 
-/* 上、下一步按鈕-start */
-Button.btn-color {
+/* 上、下一步按鈕 | 類別-被點選-start */
+Button.btn-color,
+.category-buttons .btn-color {
   background-color: #9a2540;
   color: white;
   border-radius: 7px;
   padding: 10px 12px;
   font-size: 16px;
   border: none;
-  /* text-decoration: none; */
 }
 
-Button.btn-color:hover {
-  background-color: #e08685;
+Button.btn-color:hover,
+.category-buttons .btn-color:hover {
+  background-color: #b33f5a!important;
 }
 Button.btn-color:active {
-  background-color: #e08685;
-}
-Button.btn-color:active {
-  color: #9a2540;
+  background-color: #c97689 !important;
 }
 /* 上、下一步按鈕-end */
 
-/* 類別-被點選-start */
-.category-buttons .btn-color {
-  background-color: #9a2540;
-  color: white;
-  border-radius: 5px;
-  padding: 10px 12px;
-  margin-bottom: 10px;
-  font-size: 16px;
-  border: none;
-}
-
-.category-buttons .btn-color:hover {
-  background-color: #e08685; /* ??? */
-  color: white;
-  border-radius: 5px;
-  padding: 10px 12px;
-  margin-bottom: 10px;
-  font-size: 16px;
-  border: none;
-}
-
-/* 類別-被點選-end */
-
-/* 類別-未被點選-start */
-.btn-cat-color {
-  background-color: #fcdde2;
-  color: #9a2540;
-  border-radius: 5px;
-  padding: 10px 12px;
-  margin-bottom: 10px;
-  font-size: 16px;
-  border: none;
-}
-
+/* 類別-被點選 | 未被點選-start */
+.category-buttons .btn-color,
 .btn-cat-color:hover {
   background-color: #9a2540;
   color: white;
@@ -391,7 +375,16 @@ Button.btn-color:active {
   border: none;
 }
 
-/* 類別-未被點選-end */
+.btn-cat-color {
+  background-color: #fcdde2;
+  color: #9a2540;
+  border-radius: 5px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  border: none;
+}
+/* 類別-被點選 | 未被點選-end */
 
 /* 禮盒商品圖片 */
 .giftPitcure img {
@@ -402,8 +395,11 @@ Button.btn-color:active {
 }
 
 .selected-product-image {
-  height: 250px;
-  width: 250px;
+  border-radius: 5%;
+  margin-top: 8px;
+  margin-left: 9px;
+  width: 150px;
+  height: 150px;
   object-fit: cover;
 }
 
@@ -413,6 +409,7 @@ Button.btn-color:active {
   cursor: pointer;
   background-image: url('./images/four_boxBodyIn_0.png');
   background-repeat: no-repeat;
+  background-size: contain;
 }
 .selected-six-box {
   width: 480px;
@@ -420,6 +417,7 @@ Button.btn-color:active {
   cursor: pointer;
   background-image: url('./images/six_boxBodyIn_0.png');
   background-repeat: no-repeat;
+  background-size: contain;
 }
 .selected-nine-box {
   width: 480px;
@@ -427,18 +425,11 @@ Button.btn-color:active {
   cursor: pointer;
   background-image: url('./images/nine_boxBodyIn_0.png');
   background-repeat: no-repeat;
-}
-
-.selected-product-image {
-  border-radius: 5%;
-  margin-top: 8px;
-  margin-left: 9px;
-  width: 150px;
-  height: 150px;
+  background-size: contain;
 }
 
 /* 卡片-start */
-.card-front {
+.card-front img {
   cursor: pointer;
 }
 .card-back-img {
@@ -459,6 +450,7 @@ Button.btn-color:active {
 /* 客製禮盒樣式-end */
 
 /* FAQ常見問題-start */
+
 .ui-accordion .ui-accordion-header {
   background: linear-gradient(
     240deg,
@@ -470,28 +462,54 @@ Button.btn-color:active {
   font-weight: bolder;
   line-height: 2rem;
   border-radius: 10px; /* 多加圓角 */
-}
-.ui-accordion .ui-accordion-header:not(.ui-state-active):hover {
   color: white;
 }
-.ui-accordion .ui-accordion-header:not(.ui-state-active) {
+
+.ui-accordion .ui-accordion-header:not(.ui-state-active):hover {
   color: #9a2540;
 }
+
+.ui-accordion .ui-accordion-header:not(.ui-state-active) {
+  color: rgb(78, 78, 78);
+}
+
+.ui-icon:not(.ui-state-active) {
+  color: #fcdde2;
+}
+
 .ui-accordion .ui-accordion-content {
-  height: 100px;
-  overflow: auto;
   background-color: #fcdde2;
-  /* border: 1px solid #e08685; */
   border-radius: 10px;
   padding: 10px;
-  font-size: 1.5rem;
-  color: #9a2540;
   margin: 10px 0;
+  color: rgb(56, 56, 56);
+}
+
+.ui-accordion .ui-accordion-content > p {
+  font-size: 1.2rem;
+  margin-block-start: 0;
+  margin-block-end: 0;
+  color: rgb(56, 56, 56);
+  /* overflow: hidden; */
+}
+
+#accordion > div {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  padding: 1.5rem;
+}
+
+@media (max-width: 800px) {
+  .ui-accordion .ui-accordion-content > p {
+    overflow: hidden;
+    font-size: 1rem;
+  }
 }
 /* FAQ常見問題-end */
 
 /* sub-訂閱我們-start */
-#subscribe-form {
+/* #subscribe-form {
   display: flex;
   justify-content: center;
   margin-bottom: 20px;
@@ -501,13 +519,6 @@ Button.btn-color:active {
   padding: 10px;
 }
 
-.subButton {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: rgb(245, 245, 245);
-  border: none;
-  cursor: pointer;
-}
 .subh1 {
   font-size: 1.5rem;
   font-weight: bold;
@@ -517,34 +528,173 @@ Button.btn-color:active {
 
 #message {
   font-weight: bold;
-}
+} */
 
-#accordion > div {
+#subscribe-form {
   display: flex;
-  align-items: center;
-  font-size: 1.5rem;
-  padding: 1.5rem;
+  justify-content: center;
+  margin-bottom: 20px;
+  border: none;
 }
-/* sub-訂閱我們-end */
 
-/* //整體// */
-.colfooter {
-  /* background-color: #e08685; */
-  /* background-image: url(./images/359393_m.jpg); */
-  /* background-repeat: no-repeat; */
-  /* object-fit: contain; */
-  /* background-size: contain; */
+#subscribe-form > input {
+  border: none;
+  height: 2rem;
+}
+
+#email {
+  padding: 10px;
+}
+
+.subButton {
+  background-color: #e08685;
+  color: rgb(245, 245, 245);
+  border: none;
+  cursor: pointer;
+  height: 2rem;
+  width: 6rem;
+}
+/* .subh1 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+} */
+
+#message {
+  font-weight: bold;
 }
 
 .cartstyle {
-  margin-bottom: 45vh;
-}
-
-.giftmarin {
-  margin-bottom: 16vh;
+  margin-bottom: 60vh;
 }
 
 .outlet {
   position: relative;
   height: 1000px;
 }
+
+.placeholder-text {
+  font-size: 8px;
+}
+
+/* //歷史訂單 */
+.orderhistoryMb {
+  margin-bottom: 55vh;
+}
+
+/* 測試3d */
+
+.tdimension {
+  width: 700px;
+  height: 300px;
+  margin: 20px auto 40px auto;
+  perspective: 1000px;
+  /* //perspective 是用來設定觀看者與物件間的距離，數值越大，觀看者與物件間的距離越遠，物件就會顯得越小，反之亦然。 */
+}
+.tdimension a {
+  display: block;
+  width: 47%;
+  height: 100%;
+  background: url('./images/拾月菓logo.png');
+  background-size: cover;
+  transform-style: preserve-3d;
+  transform: rotateX(70deg);
+  transition: all 0.8s;
+}
+.tdimension:hover a {
+  transform: rotateX(20deg);
+}
+.tdimension a:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 40px;
+  background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.1));
+  transform: rotateX(90deg);
+  transform-origin: bottom;
+}
+
+.tdimensionmid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 禮盒選擇產品動畫 */
+
+.animate__fadeIn {
+  animation-duration: 1s;
+  animation-fill-mode: both;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.animate__fadeIn {
+  animation-name: fadeIn;
+}
+
+.disable-pointer {
+  cursor: not-allowed !important;
+}
+
+/* 漢堡圖切換時 添加動畫效果  */
+.hamburger-icon.active {
+  transform: rotate(90deg);
+  transition: transform 0.3s ease-in-out;
+  /* transition: transform 0.5s ease-in-out; */
+}
+
+/* 漢堡圖切換時 添加動畫效果  */
+.profilemt {
+  margin-top: 20vh;
+}
+
+/* 購物車展開。 */
+/* Add hover effect and tooltip style for gift box image */
+.tooltip-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 14px;
+  z-index: 9999;
+}
+
+/* Adjust the tooltip position */
+
+/* Apply hover effect */
+.position-relative:hover .tooltip-text {
+  visibility: visible;
+}
+
+/* 導覽列-會員-下拉選單 */
+#basic-nav-dropdown {
+  color: #9a2540;
+  font-weight: bold;
+  text-decoration: none;
+}
+.dropdown-menu a {
+  color: #9a2540;
+}
+.dropdown-menu a:hover {
+  color: white;
+  background-color: #e08685;
+}
+a.active.dropdown-item{
+  background-color: #e08685;
+}
+/* 導覽列-會員-下拉選單 */

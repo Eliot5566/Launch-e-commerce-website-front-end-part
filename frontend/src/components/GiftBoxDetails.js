@@ -130,10 +130,11 @@ export default function GiftBoxDetails() {
       payload: updatedCartCount,
     });
     swal({
-      title: '成功加入購物車!',
+      title: '成功加入購物車！',
       icon: 'success',
       button: '確認',
     });
+    // alert('成功加入購物車！');
     navigate('/cart');
   };
 
@@ -164,6 +165,7 @@ export default function GiftBoxDetails() {
           icon: 'error',
           button: '確認',
         });
+        // alert('卡片資訊儲存失敗');
       }
     } catch (error) {
       console.error('Error:', error);
@@ -172,17 +174,24 @@ export default function GiftBoxDetails() {
         icon: 'error',
         button: '確認',
       });
+      // alert('卡片資訊儲存失敗');
     }
   };
   return (
-    <Container>
+    <Container
+      className="pt-3 shadow-lg"
+      style={{
+        backgroundColor: '#ffffffbc',
+        margin: '15vh auto 10vh auto',
+      }}
+    >
       <Row>
         <Col md={12}>
           <MyProgress currentStep={currentStep} />
         </Col>
       </Row>
 
-      <h3 className="fs-2 fw-bolder text-center mb-5 mt-3">確認禮盒內容</h3>
+      <h3 className="fs-2 fw-bolder text-center mb-5 mt-5">確認禮盒內容</h3>
       {
         <div className="selected-four-box mx-auto">
           {/* 渲染選定的商品信息 */}
@@ -190,7 +199,7 @@ export default function GiftBoxDetails() {
             <img
               // key={index}
               // key={selectedProduct._id}
-              key={`${selectedProduct._id}-${index}`} // 使用组合的 key
+              key={`${selectedProduct._id}-${index}`} // 使用組合的 key
               src={selectedProduct.product_package}
               className="selected-product-image"
               alt={`selected product ${selectedProduct._id}`}
@@ -213,7 +222,7 @@ export default function GiftBoxDetails() {
         {productList.map((selectedProduct, index) => (
           <div
             // key={selectedProduct._id}
-            key={`${selectedProduct._id}-${index}`} // 使用组合的 key
+            key={`${selectedProduct._id}-${index}`} // 使用組合的 key
             className="product-details d-flex justify-content-center"
           >
             <div
@@ -226,7 +235,7 @@ export default function GiftBoxDetails() {
                 style={{ width: '5rem', height: '5rem' }}
                 alt={`selected product ${selectedProduct._id}`}
               />
-              <div className="fs-5 m-3">{selectedProduct.name}</div>
+              <div className="fs-5 m-3">{selectedProduct.slug}</div>
               <div
                 className="fs-5 pe-3"
                 style={{ marginLeft: 'auto', color: '#9A2540' }}
@@ -242,21 +251,26 @@ export default function GiftBoxDetails() {
       <hr />
       <div>
         {/* 顯示用戶選擇的卡片樣式與內容 */}
-        <div
-          className="text-center mt-5 fs-4 fw-bolder"
-          style={{ color: '#9A2540' }}
-        >
-          選擇的卡片樣式
-        </div>
+       {/* 沒有選擇卡片時 不顯示以下內容  */}
+       {selectedCard === '' ? (null) :
+         <div
+         className="text-center mt-5 mb-3 fs-4 fw-bolder"
+         style={{ color: '#9A2540' }}
+       >
+         選擇的卡片樣式
+       </div>}
+    
+      
         {/* <p>{selectedCard}</p> */}
-<div className=' d-flex justify-content-center'>
-        <Col md={6} className='d-flex justify-content-center'> 
-
-            <div className="card-back-img mb-3">
-              {/* 所選卡片對應的圖片 */}
+        <div className=" d-flex justify-content-center">
+          <Col md={6} className="d-flex justify-content-center">
+    {/* 沒有選擇卡片時 不顯示卡片樣式 內容 */}
+            {selectedCard === '' ? (null
+              
+            ) :  <div className="card-back-img mb-3">
+            {/* 所選卡片對應的圖片 */}
             {selectedCard === '綠色' ? (
               <img
-
                 src={greenCardBack}
                 alt={selectedCard}
                 width={334}
@@ -264,7 +278,6 @@ export default function GiftBoxDetails() {
               />
             ) : selectedCard === '米白' ? (
               <img
-
                 src={offWhiteColorBack}
                 alt={selectedCard}
                 width={334}
@@ -278,28 +291,27 @@ export default function GiftBoxDetails() {
                 height={250}
               />
             ) : null}
-              <p
-                className="card-back-text"
-                dangerouslySetInnerHTML={{ __html: cardContent }}
-              ></p>
-            </div>
-           {/* 顯示用戶選擇的卡片樣式與內容 */}
+            <p
+              className="card-back-text"
+              dangerouslySetInnerHTML={{ __html: cardContent }}
+            ></p>
+          </div>}
+            {/* 顯示選擇的卡片樣式 內容 */}
+           
+            {/* 顯示用戶選擇的卡片樣式與內容 */}
           </Col>
-          </div>
+        </div>
       </div>
 
       {/* 添加禮盒到購物車的按鈕 */}
-      <div className="d-flex justify-content-end">
+      <div className="d-flex justify-content-center">
         <Button
-          variant="color"
-          style={{ backgroundColor: '#9a2540', color: 'white' }}
-          className="btn-color"
+          className="btn-color  mb-3"
           onClick={() => {
-            // handleSubmit(); // 调用 handleSubmit 函数
-            addToCart(20); // 调用 addToCart 函数
+            addToCart(20);
           }}
         >
-          加到購物車
+          加入購物車
         </Button>
       </div>
     </Container>
