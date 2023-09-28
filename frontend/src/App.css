@@ -42,9 +42,9 @@
 /* //合併css 918 */
 /* //合併css 918 */
 
-.my-background {
-  background-color: blue;
-  /* 其他样式属性 */
+#page1 {
+  /* height: 2500px   ; */
+  /* margin-top: 100px; */
 }
 
 /*  #page {
@@ -53,9 +53,17 @@
 /* margin-top: 100px;  
 }*/
 
+/* #page2 {
+  background-color: #777777;  
+   /* height: 600vh;   */
+
+.full-height-content {
+  height: 100vh;
+}
 .animation,
 .animation_layer {
-  height: 1000px;
+  /* height: 1000px; */
+  height: 100vh;
 }
 
 .animation {
@@ -67,6 +75,7 @@
 .animation_layer {
   background-position: bottom center;
   background-size: auto 1038px;
+
   background-repeat: repeat-x;
   width: 100%;
   position: absolute;
@@ -76,17 +85,7 @@
 }
 
 #bg {
-  /* background-image: url("./images/背景.png"); */
-  /* background: linear-gradient(to bottom, lightpink 0%,rgba(83,203,241,1) 40%,rgba(166,208,228,1) 100%); */
-  /* background: linear-gradient(to bottom, rgb(228, 178, 186) 0%,#ffe1e6 100%); */
-  /* background: linear-gradient(to bottom, #feb7c9 0%, #ffeaed 100%); */
-  background: linear-gradient(
-    to bottom,
-    /* #b6d8ff 0%, */ #feb7c9 0%,
-    #ff8b6a 65%,
-    #ff8b6a 75%,
-    #feb7c9 100%
-  );
+  background: linear-gradient(to bottom, #ffeaed 0%, #feb7c9 87.37%);
 }
 
 #Mountain {
@@ -101,7 +100,13 @@
 #rabbit {
   background-image: url('./images/兔子.png');
 }
-
+#flyrabbit {
+  background-image: url('./images/plane2x.png');
+  background-size: contain;
+}
+.flyrabbit {
+  /* background-color: rgb(214, 136, 136); */
+}
 #cloud {
   background-image: url('./images/雲.png');
 }
@@ -121,20 +126,19 @@
   background-image: url('./images/櫻花.png');
 }
 
-#block {
-  background-image: url('./images/擋住用.png');
-}
-
-/* 隐藏导航栏 */
 .hide-navbar-footer .navbar {
   display: none;
 }
 
-/* 隐藏页脚 */
+/* //隱藏footer// */
 .hide-navbar-footer .footer {
   display: none;
 }
 
 .linepay {
   width: 100px;
+}
+
+.parallax-container {
+  height: auto; /* 設定自定義高度，或者使用 "auto" 以根據內容自動調整高度 */
 }

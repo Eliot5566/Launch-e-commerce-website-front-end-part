@@ -11,6 +11,7 @@ import Button from 'react-bootstrap/Button';
 import { Helmet } from 'react-helmet-async';
 import './ProductScreen.css';
 import { Store } from '../Store';
+import swal from 'sweetalert';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -39,9 +40,6 @@ function ProductScreen() {
     loading: true,
     error: '',
   });
-  //   const [products, setProducts] = useState([]);
-
-  //使用useEffect來取得資料
   useEffect(() => {
     //定義一個async function，並且使用axios來取得資料
     const fetchData = async () => {
@@ -51,7 +49,7 @@ function ProductScreen() {
       dispatch({ type: 'FETCH_REQUEST' });
       try {
         //使用axios來取得資料
-        const result = await axios.get(`https://last-hx4j.onrender.com/api/products/slug/${slug}`);
+        const result = await axios.get(`https://last-hx4j.onrender/api/products/slug/${slug}`);
         //如果成功，就發送FETCH_SUCCESS，並且把從後端取得的資料放到action.payload
         dispatch({ type: 'FETCH_SUCCESS', payload: result.data });
         //如果失敗，就發送FETCH_FAIL，並且把錯誤訊息放到action.payload
@@ -65,7 +63,7 @@ function ProductScreen() {
     fetchData();
   }, [slug]);
   //使用 useContext 來取得購物車的資料 從Store.js中取得state和dispatch
-  //state是一個物件，裡面有userInfo和cart兩個屬性 cart是一個物件，裡面有cartItems這個屬性 cartItems是一個陣列，裡面放的是物件 
+  //state是一個物件，裡面有userInfo和cart兩個屬性 cart是一個物件，裡面有cartItems這個屬性 cartItems是一個陣列，裡面放的是物件
   const { state, dispatch: ctxDispatch } = useContext(Store);
   //把購物車的資料從state中取出來
   const { cart } = state;
@@ -76,14 +74,19 @@ function ProductScreen() {
     // 如果不存在於購物車，就把產品加到購物車中
     const quantity = existItem ? existItem.quantity + 1 : 1;
     // 使用axios來取得資料
-    const { data } = await axios.get(`https://last-hx4j.onrender.com/api/products/${product._id}`);
+    const { data } = await axios.get(`https://last-hx4j.onrender/api/products/${product._id}`);
     // 如果庫存不足，就顯示訊息 很抱歉,庫存不足
     if (data.countInStock < quantity) {
-      window.alert('很抱歉,庫存不足');
+      swal({
+        title: '很抱歉,庫存不足',
+        icon: 'warning',
+        button: '確定',
+      });
+      // window.alert('很抱歉,庫存不足');
       return;
     }
     // 把產品加到購物車中 這裡的type是自己定義的，可以是任何字串 這裡的payload是一個物件，裡面有_id、name、image、price、countInStock、qty六個屬性
-    // 這裡的...product是一個物件，裡面有_id、name、image、price、countInStock五個屬性 這裡的quantity是一個數字 
+    // 這裡的...product是一個物件，裡面有_id、name、image、price、countInStock五個屬性 這裡的quantity是一個數字
     ctxDispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity } });
     navigate('/cart');
   };
@@ -103,7 +106,7 @@ function ProductScreen() {
             <ListGroup variant="flush">
               <ListGroup.Item>
                 <Helmet>
-                  <title>{product.name}</title>
+                  <title>{product.name} | 拾月菓</title>
                 </Helmet>
               </ListGroup.Item>
 

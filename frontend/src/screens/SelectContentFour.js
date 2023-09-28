@@ -9,6 +9,7 @@ import { Store } from '../Store';
 import MyProgress from '../components/MyProgress';
 import 'animate.css';
 import swal from 'sweetalert';
+import { Helmet } from 'react-helmet-async';
 
 export default function SelectContentFour() {
   const { state, dispatch } = useContext(Store);
@@ -26,7 +27,7 @@ export default function SelectContentFour() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await axios.get('https://last-hx4j.onrender.com/api/products'); // 替換成自己的API端點
+        const result = await axios.get('https://last-hx4j.onrender/api/products'); // 替換成自己的API端點
         setProducts(result.data);
         setProducts(result.data);
       } catch (err) {
@@ -38,6 +39,15 @@ export default function SelectContentFour() {
 
   // 點擊產品時的處理函數
   const handleProductSelect = (product) => {
+    //如果選擇商品已滿 顯示提式
+    if (state.selectedProducts.length === 3) {
+      swal({
+        title: '已選滿四個商品！',
+        icon: 'warning',
+        button: '確定',
+      });
+    }
+
     if (state.selectedProducts.length >= 4) {
       // 已選擇的產品數量達到4個，顯示錯誤提示
       swal({
@@ -45,6 +55,8 @@ export default function SelectContentFour() {
         icon: 'warning',
         button: '確定',
       });
+
+      // alert('數量已達到上限！');
       return;
     }
 
@@ -68,13 +80,15 @@ export default function SelectContentFour() {
   };
 
   const handleNextButtonClick = async () => {
-    // const userResponse = window.confirm('是否需要加入禮盒卡片？');
-    // const userResponse = swal({
-    //   title: "是否需要加入禮盒卡片？",
-    //   icon: "warning",
-    //   // buttons: true,
-    //   dangerMode: true,
-    // });
+    //如果商品尚未選滿四個，跳出警告
+    if (state.selectedProducts.length < 4) {
+      swal({
+        title: '請選滿四個商品！',
+        icon: 'warning',
+        button: '確定',
+      });
+      return;
+    }
 
     const userResponse = await swal({
       title: '是否需要加入禮盒卡片？',
@@ -105,7 +119,17 @@ export default function SelectContentFour() {
   }, [state.selectedProducts, dispatch]);
 
   return (
-    <Container>
+    <Container
+      className="pt-3 shadow-lg"
+      style={{
+        backgroundColor: '#ffffffbc',
+        margin: '15vh auto 10vh auto',
+      }}
+    >
+      <Helmet>
+        <title>客製禮盒產品內容 | 拾月菓</title>
+        <meta name="description" content="拾月菓" />
+      </Helmet>
       <Row>
         <Col md={12}>
           <MyProgress currentStep={currentStep} />
@@ -115,23 +139,12 @@ export default function SelectContentFour() {
         <Col className="d-flex justify-content-between align-items-center">
           <div className="next-button">
             <Link to={`/giftbox`}>
-              <Button
-                variant="color"
-                style={{ backgroundColor: '#9a2540', color: 'white' }}
-                className="btn-color"
-              >
-                上一步
-              </Button>
+              <Button className="btn-color">上一步</Button>
             </Link>
           </div>
           <div className="next-button">
             {isNextButtonVisible && (
-              <Button
-                variant="color"
-                style={{ backgroundColor: '#9a2540', color: 'white' }}
-                className="btn-color"
-                onClick={handleNextButtonClick}
-              >
+              <Button className="btn-color" onClick={handleNextButtonClick}>
                 下一步
               </Button>
             )}
@@ -151,7 +164,7 @@ export default function SelectContentFour() {
                     <img
                       key={colIndex}
                       src={selectedProduct?.product_package || transparent}
-                      className="selected-product-image"
+                      className="selected-product-image   animate__animated "
                       alt={`selected product ${rowIndex * 2 + colIndex}`}
                       onClick={() => handleProductRemove(selectedProduct)}
                     />
@@ -162,13 +175,21 @@ export default function SelectContentFour() {
           </div>
         </Col>
       </Row>
-      {/* 要加Row、Col嗎 | 改Button */}
-      {/* <Row> */}
-      {/* <Col></Col> */}
       <div className="category-buttons m-3 text-center">
+        {/* 隨機加入產品 */}
+
         <button
-          //尚未修正 黑色邊線
-          // variant="color"
+          className="btn-color me-2"
+          onClick={() =>
+            handleProductSelect(
+              products[Math.floor(Math.random() * (products.length - 3))]
+            )
+          }
+        >
+          隨機商品
+        </button>
+
+        <button
           className={
             selectedCategory === 'all' ? 'btn-color me-2' : 'btn-cat-color me-2'
           }
@@ -176,6 +197,7 @@ export default function SelectContentFour() {
         >
           所有商品
         </button>
+
         <button
           className={
             selectedCategory === '銅鑼燒'
@@ -227,8 +249,7 @@ export default function SelectContentFour() {
           水饅頭
         </button>
       </div>
-      {/* </Row> */}
-      <Row>
+      <Row className="text-center">
         {products
           .filter((product) =>
             selectedCategory === 'all'
@@ -241,7 +262,7 @@ export default function SelectContentFour() {
               sm={6}
               md={4}
               lg={3}
-              className="mb-3 giftPitcure"
+              className="mb-3 giftPitcure "
               onClick={() => handleProductSelect(product)}
             >
               <GiftProducts product={product} />

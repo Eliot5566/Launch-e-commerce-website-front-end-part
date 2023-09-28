@@ -15,6 +15,8 @@ import { Store } from '../Store';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { Container } from 'react-bootstrap';
+import Paypal from '../images/paypal.svg';
+import LinePay from '../images/LinePay.png';
 
 const clientId =
   'AYngKbWm4TYcnQURW3lDH60P0myyeMHowAHYDEz_oJ87IdUW71el5uPOt9FwbFTp5mPotEWGTOx0QxGm';
@@ -99,7 +101,7 @@ export default function OrderScreen() {
       try {
         dispatch({ type: 'PAY_REQUEST' });
         const { data } = await axios.put(
-          `https://last-hx4j.onrender.com/api/orders/${orderId}/pay`,
+          `https://last-hx4j.onrender/api/orders/${orderId}/pay`,
           details,
           {
             headers: { authorization: `Bearer ${userInfo.token}` },
@@ -129,7 +131,7 @@ export default function OrderScreen() {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
         //改
-        const { data } = await axios.get(`https://last-hx4j.onrender.com/api/orders/${orderId}`, {
+        const { data } = await axios.get(`https://last-hx4j.onrender/api/orders/${orderId}`, {
           headers: { authorization: `Bearer ${userInfo.token}` },
         });
         data.order_items = JSON.parse(data.order_items);
@@ -152,15 +154,11 @@ export default function OrderScreen() {
           };
         });
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
-        setIsLoading(false); // 在数据加载完成后设置 isLoading 为 false
+        setIsLoading(false);
         console.log(data);
-        // console.log(order);
-        //為甚麼這裡的order是空的 但是在上面的dispatch裡面的data是有值的 但是在這裡的order就是空的 這是為什麼
-        //因為這裡的order是一開始的order 一開始的order是空的 所以這裡的order就是空的
-        //payload: data 這裡的data是從後端傳過來的data 這裡的data是有值的
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: err.message });
-        setIsLoading(false); // 在数据加载失败后设置 isLoading 为 false
+        setIsLoading(false);
       }
     };
 
@@ -176,7 +174,7 @@ export default function OrderScreen() {
     } else {
       const loadPaypalScript = async () => {
         try {
-          const { data: clientId } = await axios.get('https://last-hx4j.onrender.com/api/keys/paypal', {
+          const { data: clientId } = await axios.get('https://last-hx4j.onrender/api/keys/paypal', {
             headers: { authorization: `Bearer ${userInfo.token}` },
           });
           console.log(
@@ -189,13 +187,12 @@ export default function OrderScreen() {
             value: {
               'client-id':
                 'AYngKbWm4TYcnQURW3lDH60P0myyeMHowAHYDEz_oJ87IdUW71el5uPOt9FwbFTp5mPotEWGTOx0QxGm',
-              currency: 'TWD', // 設定貨幣
+              currency: 'TWD',
             },
           });
-          paypalDispatch({ type: 'setLoadingStatus', value: 'loaded' }); // 设置 PayPal 脚本为加载完成状态
+          paypalDispatch({ type: 'setLoadingStatus', value: 'loaded' });
         } catch (error) {
           console.error('Error loading PayPal script:', error);
-          // 处理加载失败的情况
           paypalDispatch({ type: 'setLoadingStatus', value: 'failed' });
         }
       };
@@ -211,14 +208,15 @@ export default function OrderScreen() {
     successPay,
     order.id,
   ]);
+
   return loading ? (
     <LoadingBox></LoadingBox>
   ) : error ? (
     <MessageBox variant="danger">{error}</MessageBox>
   ) : (
-    <Container>
+    <Container className="small-container mb-5">
       <Helmet>
-        <title>訂單 {orderId}</title>
+        <title>訂單 | 拾月菓 {orderId}</title>
       </Helmet>
       <PayPalScriptProvider options={{ 'client-id': clientId }}>
         <h1 className="my-3">訂單編號 {orderId}</h1>
@@ -226,7 +224,7 @@ export default function OrderScreen() {
           <Col md={8}>
             <Card className="mb-3">
               <Card.Body>
-                <Card.Title>運送資訊</Card.Title>
+                <Card.Title className="border-bottom">運送資訊</Card.Title>
 
                 <Card.Text>
                   {order.shipping_address && (
@@ -252,9 +250,16 @@ export default function OrderScreen() {
             </Card>
             <Card className="mb-3">
               <Card.Body>
-                <Card.Title>付款資訊</Card.Title>
+                <Card.Title className="border-bottom mb-3">付款資訊</Card.Title>
                 <Card.Text>
-                  <strong>付款方式:</strong> {order.payment_method}
+                  <strong>付款方式： </strong>
+                  {/* <br /> */}
+
+                  <img
+                    src={order.payment_method === 'PayPal' ? Paypal : LinePay}
+                    alt="paypal"
+                    className="paypal linepay ms-1"
+                  />
                 </Card.Text>
                 {order.is_paid ? (
                   <MessageBox variant="success">
@@ -268,7 +273,7 @@ export default function OrderScreen() {
 
             <Card className="mb-3">
               <Card.Body>
-                <Card.Title>購買明細</Card.Title>
+                <Card.Title className="border-bottom">購買明細</Card.Title>
                 <ListGroup variant="flush">
                   {order?.orderItems?.map((item) => (
                     <ListGroup.Item key={item._id}>
@@ -279,7 +284,7 @@ export default function OrderScreen() {
                             alt={item.name}
                             className="img-fluid rounded img-thumbnail"
                           />{' '}
-                          <Link to={`/product/${item.slug}`}>{item.name}</Link>
+                          <Link to={`/product/${item._id}`}>{item.name}</Link>
                         </Col>
                         <Col md={3}>
                           <span>{item.quantity}</span>
@@ -295,7 +300,7 @@ export default function OrderScreen() {
           <Col md={4}>
             <Card className="mb-3">
               <Card.Body>
-                <Card.Title>訂單明細</Card.Title>
+                <Card.Title className="border-bottom">訂單明細</Card.Title>
                 <ListGroup variant="flush">
                   <ListGroup.Item>
                     <Row>

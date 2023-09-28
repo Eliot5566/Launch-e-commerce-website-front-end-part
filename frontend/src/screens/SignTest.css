@@ -1,15 +1,12 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400|Lora');
-/* body {
-  background: #cbc0d3;
-} */
 .signcontainer {
   align-items: center;
   justify-content: center;
   z-index: 5;
   opacity: 0.9;
   margin: auto;
-  width: 650px;
-  height: 1000px;
+  width: 800px;
+  height: 850px;
   position: relative;
 }
 .welcome {
@@ -17,10 +14,10 @@
   background: #f6f6f6;
   /* background: #faeddd; */
   /* background: #f6f6f6; */
-  width: 850px;
+  width: 800px;
   height: 515px;
   position: absolute;
-  top: 15%;
+  top: 30%;
   border-radius: 5px;
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
   /* background-color: #faeddd; */
@@ -28,7 +25,7 @@
 .pinkbox {
   position: absolute;
   top: -10%;
-  left: 5%;
+  left: 0;
   background: #fcdde2;
   width: 420px;
   height: 600px;
@@ -58,7 +55,6 @@
   text-align: center;
   margin-top: 95px;
   text-transform: uppercase;
-  /* color: #f6f6f6; */
   color: black;
   font-size: 2em;
   letter-spacing: 8px;
@@ -98,13 +94,7 @@
   left: 29%;
   opacity: 0.7;
 }
-/* .smaller {
-  width: 90px;
-  height: 100px;
-  top: 48%;
-  left: 38%;
-  opacity: 0.9;
-} */
+
 .signbutton {
   padding: 12px;
   font-family: 'Open Sans', sans-serif;
@@ -364,4 +354,77 @@
   }
 }
 
-/* 動畫 */
+@media (max-width: 768px) {
+  .signcontainer {
+    width: 75%;
+    height: 75%;
+    margin: auto;
+    padding: 0;
+  }
+  .welcome {
+    width: 75%;
+    height: 75%;
+    top: 0;
+    left: 0;
+    margin: auto;
+
+    border-radius: 0;
+  }
+  .pinkbox {
+    width: 75%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    border-radius: 0;
+    /* box-shadow: none; */
+  }
+  .leftbox {
+    width: 50%;
+    height: 50%;
+    top: 0;
+    left: 0vw;
+  }
+
+  .rightbox {
+    width: 50%;
+    height: 50%;
+    top: 0;
+    left: 40vw;
+  }
+  .signh1 {
+    margin-top: 50px;
+    font-size: 1.5em;
+  }
+  .signtitle {
+    margin-top: 10%;
+    font-size: 1.5em;
+  }
+  .signaccount {
+    margin-top: 30%;
+  }
+  .signbutton {
+    margin-top: 10%;
+  }
+  .signinput {
+    width: 80%;
+  }
+  .checkbox {
+    left: -50px;
+  }
+
+  .signaccount {
+    /* display: none; */
+    margin-top: 15vh;
+  }
+
+  /* //調整為小視窗時 可以看見此按鈕 不要被覆蓋 */
+  .signbutton2 {
+    margin-top: 70%;
+  }
+
+  /* ///////////////////////////////// */
+
+  /* //小視窗下點選註冊頁面的註冊按鈕後，註冊頁面消失，登入頁面出現 */
+
+  /* ///////////////////////////////// */
+}

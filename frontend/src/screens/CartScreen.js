@@ -19,6 +19,9 @@ export default function CartScreen() {
   const [selectedGiftBoxType, setSelectedGiftBoxType] = useState('4');
   const [expandedProduct, setExpandedProduct] = useState(null);
 
+  // 在 CartScreen 組件中定義三種不同禮盒尺寸的卡片內容和樣式
+
+
   const navigate = useNavigate();
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -29,9 +32,32 @@ export default function CartScreen() {
     selectedProducts6,
     selectedProducts9,
     selectedCard,
+    selectedCard6,
+    selectedCard9,
     cardContent,
+    cardContent6,
+    cardContent9,
     _id,
   } = state;
+
+
+  const cardContentMap = {
+    '4': {
+      cardType: selectedCard,
+      cardContent: cardContent,
+    },
+    '6': {
+      cardType: selectedCard6,
+      cardContent: cardContent6,
+    },
+    '9': {
+      cardType: selectedCard9,
+      cardContent: cardContent9,
+    },
+  };
+  
+  const selectedCardContent = cardContentMap[selectedGiftBoxType];
+
 
   const productMap = selectedProducts.reduce((map, product) => {
     const { _id, name } = product;
@@ -70,10 +96,14 @@ export default function CartScreen() {
   };
 
   const updateCartHandler = async (item, quantity) => {
-    const { data } = await axios.get(
-      `https://last-hx4j.onrender.com/api/products/${item._id}`
-    );
+    const { data } = await axios.get(`https://last-hx4j.onrender/api/products/${item._id}`);
     if (data.countInStock < quantity) {
+      // swal({
+      //   title: "商品數量不足",
+      //   text: "請重新選擇商品數量",
+      //   icon: "warning",
+      //   button: "確定",
+      // });
       window.alert('Sorry. Product is out of stock');
       return;
     }
@@ -98,11 +128,12 @@ export default function CartScreen() {
       }
     });
   };
+
   const MaxHandler = (item) => {
     if (item.quantity >= 20) {
       MySwal.fire({
         title: <strong>訂購商品上限為20個</strong>,
-        html: <p>感謝您的支持~</p>,
+        html: <p>感謝您的支持～</p>,
         icon: 'warning',
         iconColor: '#e4849a',
         confirmButtonColor: '#9a2540',
@@ -113,7 +144,6 @@ export default function CartScreen() {
     return false; // 表示未達到最大限制
   };
 
-
   const plus = (item) => {
     if (!MaxHandler(item)) {
       setInput(parseInt(input) + 1);
@@ -122,7 +152,7 @@ export default function CartScreen() {
     if (item.quantity === 0) {
       MySwal.fire({
         title: <strong>庫存已售罄</strong>,
-        html: <p>感謝您的支持~</p>,
+        html: <p>感謝您的支持～</p>,
         icon: 'warning',
         iconColor: '#e4849a',
         confirmButtonColor: '#9a2540',
@@ -130,6 +160,12 @@ export default function CartScreen() {
       });
     }
   };
+
+  // const minus = (item) => {
+  //   if (input > min) {
+  //     setInput(parseInt(input) - 1);
+  //   }
+  // };
 
   const minus = (item) => {
     if (item.quantity > min) {
@@ -153,7 +189,7 @@ export default function CartScreen() {
       // console.log('cardContent', cardContent);
       // const selectedProduct = state.selectedProducts;
       const selectedProduct = JSON.stringify(state.selectedProducts);
-      const response = await axios.post('https://last-hx4j.onrender.com/save-card-info', {
+      const response = await axios.post('https://last-hx4j.onrender/save-card-info', {
         userId,
         cardType,
         cardContent,
@@ -182,16 +218,20 @@ export default function CartScreen() {
       // alert('請先登入會員');
     }
   };
+
   const [input, setInput] = useState('1');
   const min = 1;
   const max = 20;
+
   return (
-    <div className="cartstyle">
+    <div className="cartstyle" style={{ marginTop: '10rem' }}>
       <Container>
         <Helmet>
-          <title>購物車內容</title>
+          <title>購物車內容 | 拾月菓</title>
         </Helmet>
-        <h1 className="mb-4 fw-bold">購物車內容</h1>
+        <h1 className="mt-5 mb-4 fw-bold" style={{ color: 'rgb(78,78,78)' }}>
+          購物車內容
+        </h1>
 
         <Row>
           <Col md={8} className="border-0">
@@ -200,8 +240,11 @@ export default function CartScreen() {
                 <div className="clouds"></div>
                 <div className="rabbit"></div>
                 <br />
-                <div className="carp fs-4 fw-bold">
-                  購物車目前空空的，快點去挑選喜歡的產品
+                <div
+                  className="carp fs-4 fw-bold"
+                  style={{ color: 'rgb(78,78,78)' }}
+                >
+                  購物車目前空空的，快點去挑選喜歡的產品吧～
                 </div>
               </div>
             ) : (
@@ -209,11 +252,11 @@ export default function CartScreen() {
                 {cartItems.map((item) => (
                   <ListGroup.Item key={item._id}>
                     <Row className="align-items-center">
-                      <Col md={3}>
+                      {/* <Col md={3}>
                         <img
                           src={item.image}
                           alt={item.name}
-                          className="img-fluid rounded img-thumbnail"
+                          className="img-fluid rounded img-thumbnail "
                           style={{
                             height: '10rem',
                             width: '10rem',
@@ -225,12 +268,68 @@ export default function CartScreen() {
                             }
                           }}
                         />
+                      </Col> */}
+                      <Col md={3}>
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className="img-fluid rounded img-thumbnail position-relative"
+                          style={{
+                            height: '10rem',
+                            width: '10rem',
+                            objectFit: 'cover',
+                          }}
+                          onMouseEnter={() =>
+                            item.isGiftBox && !expandedProduct
+                              ? (document.getElementById(
+                                  `tooltip-${item._id}`
+                                ).style.visibility = 'visible')
+                              : null
+                          }
+                          onMouseLeave={() =>
+                            item.isGiftBox && !expandedProduct
+                              ? (document.getElementById(
+                                  `tooltip-${item._id}`
+                                ).style.visibility = 'hidden')
+                              : null
+                          }
+                          onClick={() => {
+                            if (item.isGiftBox) {
+                              toggleProductContent(item._id, item.giftBoxType);
+                            }
+                          }}
+                        />
+                        {item.isGiftBox && (
+                          <div
+                            id={`tooltip-${item._id}`}
+                            className="position-absolute"
+                            style={{
+                              padding: '0.5rem',
+                              zIndex: '0',
+                              top: '0',
+                              left: '2.3%',
+                              width: '18%',
+                              borderRadius: '0.5rem',
+
+                              visibility: 'hidden',
+                              backgroundColor: 'rgba(0,0,0,0.5)',
+                              color: 'white',
+                              fontSize: '1rem',
+                              display: 'flex',
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                            }}
+                          >
+                            點擊查看商品內容
+                          </div>
+                        )}
                       </Col>
+
                       <Col md={4}>
                         <Link
-                          to={`/product/${item.slug}`}
-                          className="text-decoration-none text-black"
-                          style={{ fontSize: '1.5rem' }}
+                          to={`/product/${item._id}`}
+                          className="text-decoration-none fw-bold"
+                          style={{ fontSize: '1.5rem', color: 'rgb(78,78,78)' }}
                         >
                           {item.name}
                         </Link>
@@ -238,7 +337,7 @@ export default function CartScreen() {
                       <Col md={2}>
                         <Button
                           onClick={() => minus(item)}
-                          className="btn fw-bolder rounded-circle fs-5 p-0 border-0"
+                          className="fw-bolder rounded-circle fs-5 p-0 border-0 btn-color"
                           style={{
                             width: '2rem',
                             height: '2rem',
@@ -249,10 +348,10 @@ export default function CartScreen() {
                         >
                           -
                         </Button>
-                        <span className="p-2">{item.quantity}</span>
+                        <span className="fs-5 p-2">{item.quantity}</span>
                         <Button
                           onClick={() => plus(item)}
-                          className="btn fw-bolder rounded-circle fs-5 p-0 border-0"
+                          className="fw-bolder rounded-circle fs-5 p-0 border-0 btn-color"
                           style={{
                             width: '2rem',
                             height: '2rem',
@@ -274,7 +373,7 @@ export default function CartScreen() {
                           variant="none"
                         >
                           <i
-                            className="fas fa-trash-alt"
+                            className="fas fa-trash-alt btn-color"
                             style={{ fontSize: '1.5rem', color: '#9a2540' }}
                           ></i>
                         </Button>
@@ -282,8 +381,7 @@ export default function CartScreen() {
                     </Row>
                     {item.isGiftBox && expandedProduct === item._id && (
                       <div>
-                        <div className=" ">
-                          {/* 渲染选定的商品信息 */}
+                        <div>
                           {(() => {
                             const productCounts =
                               selectedGiftBoxType === '4'
@@ -315,10 +413,13 @@ export default function CartScreen() {
                             );
                           })()}
                         </div>
-                        <h4>卡片內容：</h4>
-                        <p>樣式:{selectedCard}</p>
-                        <p>內容:{cardContent}</p>
-                      </div>
+
+
+                        
+    <h4>卡片內容：</h4>
+    <p>樣式：{selectedCardContent.cardType}</p>
+    <p>內容：{selectedCardContent.cardContent}</p>
+  </div>
                     )}
                   </ListGroup.Item>
                 ))}
@@ -330,7 +431,10 @@ export default function CartScreen() {
               <Card.Body>
                 <ListGroup variant="flush">
                   <ListGroup.Item>
-                    <h3>
+                    <h3
+                      className="text-center fw-bold"
+                      style={{ color: 'rgb(78,78,78)' }}
+                    >
                       商品數量 ({cartItems.reduce((a, c) => a + c.quantity, 0)}{' '}
                       件) : NT$&nbsp;
                       {cartItems.reduce((a, c) => a + c.price * c.quantity, 0)}
@@ -339,14 +443,14 @@ export default function CartScreen() {
                   <ListGroup.Item>
                     <div className="d-grid">
                       <Button
-                        style={{ backgroundColor: '#9a2540' }}
-                        className="text-white border-0 fs-4"
+                        className="text-white fs-4 btn-color mt-2"
                         onClick={() => {
                           checkoutHandler();
-                          handleSubmit(); // 调用 handleSubmit 函数
+                          handleSubmit(); // 
                         }}
                         type="button"
                         variant="primary"
+                        style={{ backgroundColor: '#9a2540' }}
                         disabled={cartItems.length === 0}
                       >
                         前往結帳

@@ -11,6 +11,7 @@ import offWhiteColorBack from '../images/card/offwhite_card_back.jpg';
 import pinkCardBack from '../images/card/pink_card_back.jpg';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import MyProgress from '../components/MyProgress';
+import { Helmet } from 'react-helmet-async';
 
 const GiftCard = () => {
   const { state, dispatch } = useContext(Store); // 使用全局狀態和dispatch
@@ -24,7 +25,7 @@ const GiftCard = () => {
   const navigate = useNavigate();
   // 初始化第二張圖片的路徑為空字串
   const [secondImage, setSecondImage] = useState('');
-  const maxContentLength = 50; // 最大字數限制
+  const maxContentLength = 70; // 最大字數限制
 
   const handleCardSelect = (card) => {
     setNewSelectedCard(card);
@@ -57,45 +58,22 @@ const GiftCard = () => {
     dispatch({ type: 'UPDATE_CARD_CONTENT', payload: content });
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   try {
-  //     //取得登入的使用者的 資料庫_id
-  //     const userId = userInfo._id;
-  //     // console.log('userId', userId);
-  //     const cardType = selectedCard;
-  //     // console.log('cardType', cardType);
-  //     const cardContent = newCardContent;
-  //     // console.log('cardContent', cardContent);
-
-  //     // const selectedProduct = state.selectedProducts;
-  //     const selectedProduct = JSON.stringify(state.selectedProducts); // 将数组转换为JSON字符串
-  //     console.log('selectedProduct', selectedProduct);
-  //     const response = await axios.post('/save-card-info', {
-  //       userId,
-  //       cardType,
-  //       cardContent,
-  //       selectedProduct,
-  //     });
-
-  //     if (response.status === 200) {
-  //       navigate('/cardboxdetail');
-  //       setNewCardContent('');
-  //     } else {
-  //       alert('卡片資訊儲存失敗');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error:', error);
-  //     alert('卡片資訊儲存失敗');
-  //   }
-  // };
-
   useEffect(() => {
     handleCardSelect('綠色');
   }, []);
+
   return (
-    <Container>
+    <Container
+      className="pt-3 shadow-lg"
+      style={{
+        backgroundColor: '#ffffffbc',
+        margin: '15vh auto 10vh auto',
+      }}
+    >
+      <Helmet>
+        <title>客製化卡片 | 拾月菓</title>
+        <meta name="description" content="拾月菓" />
+      </Helmet>
       <Row>
         <Col md={12}>
           <MyProgress currentStep={currentStep} />
@@ -138,7 +116,7 @@ const GiftCard = () => {
         <Row>
           <hr />
           <h3 className="text-center mb-3">二、填寫卡片內容</h3>
-          <Col md={6}>
+          <Col md={6} className="d-flex justify-content-center ">
             <div className="card-back-img mb-3">
               {/* 所選卡片對應的圖片 */}
               <img
@@ -152,32 +130,25 @@ const GiftCard = () => {
                 dangerouslySetInnerHTML={{ __html: newCardContent }}
               ></p>
             </div>
-            <p>
-              *卡片預覽 <br /> <span>*超出文字將會被截斷</span>
-            </p>
           </Col>
           <Col md={6}>
             <div>
+              <p>
+                *卡片預覽 <br /> <span>*超出文字將會被截斷</span>
+              </p>
               <textarea
                 className="form-control"
-                rows="5" // 設定顯示幾行文字
-                maxLength="50" // 添加最大字數限制
+                rows="6" // 設定顯示幾行文字
+                maxLength="70" // 添加最大字數限制
                 placeholder="請輸入卡片內容"
                 value={newCardContent}
                 onChange={handleContentChange}
               ></textarea>
             </div>
           </Col>
-          <div className="text-center mt-3">
+          <div className="text-center mt-3 mb-3">
             <Link to="/cardboxdetail">
-              <Button
-                variant="color"
-                style={{ backgroundColor: '#9a2540', color: 'white' }}
-                className="btn-color"
-                // onClick={handleSubmit}
-              >
-                確定
-              </Button>
+              <Button className="btn-color">確定</Button>
             </Link>
           </div>
         </Row>
