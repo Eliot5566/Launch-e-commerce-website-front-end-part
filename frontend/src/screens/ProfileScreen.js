@@ -41,7 +41,7 @@ export default function ProfileScreen() {
     e.preventDefault();
     try {
       const { data } = await axios.put(
-        'https://last-hx4j.onrender/api/users/update-name', // 假設後端提供了專門用於更新用戶名稱的API端點
+        'https://last-hx4j.onrender.com/api/users/update-name', // 假設後端提供了專門用於更新用戶名稱的API端點
         {
           name,
         },
@@ -74,7 +74,7 @@ export default function ProfileScreen() {
     }
     try {
       const { data } = await axios.put(
-        'https://last-hx4j.onrender/api/users/update-password',
+        'https://last-hx4j.onrender.com/api/users/update-password',
         {
           oldPwd,
           pwd,

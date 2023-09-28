@@ -72,7 +72,7 @@ export default function PlaceOrder() {
         cardContent9: state.cardContent9,
       };
 
-      const { data } = await Axios.post('https://last-hx4j.onrender/api/orders', orderData, {
+      const { data } = await Axios.post('https://last-hx4j.onrender.com/api/orders', orderData, {
         headers: {
           Authorization: `Bearer ${userInfo.token}`,
         },

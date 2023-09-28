@@ -27,7 +27,7 @@ export default function SelectContentNine() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await axios.get('https://last-hx4j.onrender/api/products'); // 替換成自己的API端點
+        const result = await axios.get('https://last-hx4j.onrender.com/api/products'); // 替換成自己的API端點
         setProducts9(result.data);
         setProducts9(result.data);
       } catch (err) {

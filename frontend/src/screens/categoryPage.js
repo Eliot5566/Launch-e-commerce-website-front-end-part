@@ -155,10 +155,10 @@ function ProductCard({ category }) {
         if (category && category !== '所有商品') {
           // 發送請求以獲取產品數據
           response = await axios.get(
-            ` https://last-hx4j.onrender/products/${category}`
+            ` https://last-hx4j.onrender.com/products/${category}`
           );
         } else {
-          response = await axios.get(`https://last-hx4j.onrender/products`);
+          response = await axios.get(`https://last-hx4j.onrender.com/products`);
         }
 
         // 過濾掉禮盒 9/11新增

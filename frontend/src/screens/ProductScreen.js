@@ -49,7 +49,7 @@ function ProductScreen() {
       dispatch({ type: 'FETCH_REQUEST' });
       try {
         //使用axios來取得資料
-        const result = await axios.get(`https://last-hx4j.onrender/api/products/slug/${slug}`);
+        const result = await axios.get(`https://last-hx4j.onrender.com/api/products/slug/${slug}`);
         //如果成功，就發送FETCH_SUCCESS，並且把從後端取得的資料放到action.payload
         dispatch({ type: 'FETCH_SUCCESS', payload: result.data });
         //如果失敗，就發送FETCH_FAIL，並且把錯誤訊息放到action.payload
@@ -74,7 +74,7 @@ function ProductScreen() {
     // 如果不存在於購物車，就把產品加到購物車中
     const quantity = existItem ? existItem.quantity + 1 : 1;
     // 使用axios來取得資料
-    const { data } = await axios.get(`https://last-hx4j.onrender/api/products/${product._id}`);
+    const { data } = await axios.get(`https://last-hx4j.onrender.com/api/products/${product._id}`);
     // 如果庫存不足，就顯示訊息 很抱歉,庫存不足
     if (data.countInStock < quantity) {
       swal({

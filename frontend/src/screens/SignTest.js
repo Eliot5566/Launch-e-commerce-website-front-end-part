@@ -131,7 +131,7 @@ export default function SignTest() {
     }
 
     try {
-      const { data } = await Axios.post('https://last-hx4j.onrender/api/users/signup', {
+      const { data } = await Axios.post('https://last-hx4j.onrender.com/api/users/signup', {
         name,
         email,
         pwd,
@@ -155,7 +155,7 @@ export default function SignTest() {
   const submitHandlerSignIn = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await Axios.post('https://last-hx4j.onrender/api/users/signin', {
+      const { data } = await Axios.post('https://last-hx4j.onrender.com/api/users/signin', {
         email,
         pwd,
       });

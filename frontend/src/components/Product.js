@@ -19,7 +19,7 @@ function Product(props) {
     // 如果已經存在於購物車，就把數量加1
     // 如果不存在於購物車，就把產品加到購物車中
     const quantity = existItem ? existItem.quantity + 1 : 1;
-    const { data } = await axios.get(`https://last-hx4j.onrender/api/products/${item._id}`);
+    const { data } = await axios.get(`https://last-hx4j.onrender.com/api/products/${item._id}`);
     if (data.countInStock < quantity) {
       window.alert('Sorry. Product is out of stock');
       return;
