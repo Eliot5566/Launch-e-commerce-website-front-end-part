@@ -150,7 +150,7 @@ export default function GiftBoxDetails() {
       // console.log('cardContent', cardContent);
       // const selectedProduct = state.selectedProducts;
       const selectedProduct = JSON.stringify(state.selectedProducts);
-      const response = await axios.post('/save-card-info', {
+      const response = await axios.post('https://last-hx4j.onrender.com/save-card-info', {
         userId,
         cardType,
         cardContent,
